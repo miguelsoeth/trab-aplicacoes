@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome, Admin!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        .admin-container {
+            background-color: #fff;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 75%;
+            text-align: center;
+        }
+        h1 {
+            margin: 0px;
+            color: #333;
+        }
+        #logout-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 50px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        #logout-button:hover {
+            background-color: #0056b3;
+        }
+        .button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            width: 30%;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bem vindo, <%= name %>!</h1>
+    <div class="admin-container">
+        <a class="button" href="/cadastro-categorias">Cadastro de Categorias</a>
+        <a class="button" href="/cadastro-contas">Cadastro de Contas</a>
+        <a class="button" href="/cadastro-usuarios">Cadastro de Usuários</a>
+    </div>
+    <a id="logout-button" href="/logout">Logout</a>
+</body>
+</html>
