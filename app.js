@@ -14,6 +14,10 @@ app.use(session({
     saveUninitialized: true
 }));
 
+app.get('/', (req, res) => {
+    res.redirect('/login');
+});
+
 app.get('/login', (req, res) => {
     if (req.session.user) {
         res.redirect('/admin');
