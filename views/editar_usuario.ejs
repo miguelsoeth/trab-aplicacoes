@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar usuário</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        #botao-editar {
+            float: right;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            cursor: pointer;
+            background-color: #007bff;
+        }
+        #botao-deletar {
+            float: right;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            margin-right: 10px;
+            cursor: pointer;
+            background-color: darkred;
+        }
+        h1 {
+            display: flex;
+        }
+        #home {
+            text-decoration: none;
+            font-size: 15px;
+            margin-right: 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: white;
+            background-color: #007bff;
+            padding: 10px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="editar-usuario">
+        <a href="/admin/cadastrar-usuario" id="home">Voltar</a> 
+        <h2>Editar Usuário</h2>
+        <form id="userForm">
+            <label for="name">Nome:</label>
+            <input type="text" id="name" name="name" value="<%= usuario.name %>" required><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="<%= usuario.email %>" required><br>
+
+            <label for="user">Usuário:</label>
+            <input type="text" id="user" name="user" value="<%= usuario.user %>" required><br>
+
+            <label for="password">Senha:</label>
+            <input type="password" id="password" name="pwd" required><br>
+
+            <label for="level">Nível:</label>
+            <select id="level" name="level" required>
+                <option value="admin" <%= usuario.level === 'admin' ? 'selected' : '' %>>Admin</option>
+                <option value="user" <%= usuario.level === 'user' ? 'selected' : '' %>>Usuário</option>
+            </select><br>
+
+            <label for="status">Status:</label>
+            <select id="status" name="status" required>
+                <option value="on" <%= usuario.status === 'on' ? 'selected' : '' %>>On</option>
+                <option value="off" <%= usuario.status === 'off' ? 'selected' : '' %>>Off</option>
+            </select><br>
+
+            <button type="submit">Editar</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('userForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(this);
+            const jsonData = {};
+            formData.forEach((value, key) => {
+                jsonData[key] = value;
+            });
+
+            console.log(jsonData);
+            const userId = window.location.pathname.split('/').pop();
+            
+            fetch(`/admin/editar-usuario/${userId}`, {
+                method: 'PUT',
+                body: JSON.stringify(jsonData),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Network response was not ok.');
+            })
+            .then(data => {
+                console.log('User updated:', data);
+                window.location.href = `http://localhost:3000/admin/cadastrar-usuario`;
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Usuário</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        #lista-usuarios {
+            width: 60%;
+            height: 100vh;
+            padding: 0px 50px;
+        }
+        #lista-usuarios ul {
+            padding: 0px;
+        }
+        #lista-usuarios ul li {
+            border: 2px solid gray;
+            padding: 10px;
+            list-style-type: none;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        #botao-editar {
+            float: right;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            cursor: pointer;
+            background-color: #007bff;
+        }
+        #botao-deletar {
+            float: right;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            margin-right: 10px;
+            cursor: pointer;
+            background-color: darkred;
+        }
+        h1 {
+            display: flex;
+        }
+        #home {
+            text-decoration: none;
+            font-size: 15px;
+            margin-right: 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: white;
+            background-color: #007bff;
+            padding: 10px;
+            border: none;
+        }
+    </style>
+</head>
+<body>    
+    <div id="lista-usuarios">
+        
+        <h1><a href="/admin" id="home">Home</a> Lista de usuários</h1>
+        <ul>
+            <% users.forEach(user => { %>
+                <li>                    
+                    <strong>Name:</strong> <%= user.name %>
+                    <strong>Email:</strong> <%= user.email %>
+                    <strong>User:</strong> <%= user.user %>
+                    <button id="botao-editar">Editar</button>
+                    <button id="botao-deletar">Deletar</button><br>
+                    <strong>ID:</strong> <span id="id"><%= user.id %></span>
+                    <strong>Level:</strong> <%= user.level %>
+                    <strong>Status:</strong> <%= user.status %>                    
+                </li>                
+            <% }); %>
+        </ul>
+    </div>
+    <div id="cadastro-usuario">
+        <h2>Cadastro de Usuário</h2>
+        <form id="userForm" action="/admin/cadastrar-usuario" method="POST">
+            <label for="name">Nome:</label>
+            <input type="text" id="name" name="name" required><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br>
+
+            <label for="user">Usuário:</label>
+            <input type="text" id="user" name="user" required><br>
+
+            <label for="password">Senha:</label>
+            <input type="password" id="password" name="pwd" required><br>
+
+            <label for="level">Nível:</label>
+            <select id="level" name="level" required>
+                <option value="admin">Admin</option>
+                <option value="user">Usuário</option>
+            </select><br>
+
+            <label for="status">Status:</label>
+            <select id="status" name="status" required>
+                <option value="on">On</option>
+                <option value="off">Off</option>
+            </select><br>
+
+            <button type="submit">Cadastrar</button>
+        </form>
+    </div>    
+    <script>
+        function deleteUser(id) {
+            if (confirm("Tem certeza que deseja deletar esse usuário?")) {
+                fetch(`/admin/deletar-usuario/${id}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    } else {
+                        throw new Error('Erro ao deletar');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        }
+        function editUser(id) {
+            console.log("editando usuario ", id);
+            window.location.href = `/admin/editar-usuario/${id}`;
+        }
+        document.querySelectorAll('#lista-usuarios button#botao-deletar').forEach(button => {
+            button.addEventListener('click', () => {
+                const userId = button.parentNode.querySelector('#id').textContent;
+                deleteUser(userId);
+            });
+        });
+
+        document.querySelectorAll('#lista-usuarios button#botao-editar').forEach(button => {
+            button.addEventListener('click', () => {
+                const userId = button.parentNode.querySelector('#id').textContent;
+                editUser(userId);
+            });
+        });
+    </script>
+</body>
+</html>
