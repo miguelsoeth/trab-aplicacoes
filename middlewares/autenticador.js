@@ -2,9 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
-const users = JSON.parse(fs.readFileSync('./data/users.json'));
 
 function autenticador(req, res, next) {
+  const users = JSON.parse(fs.readFileSync('./data/users.json'));
   const { account, password } = req.body;
   const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
 
