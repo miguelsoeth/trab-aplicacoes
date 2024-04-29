@@ -1,29 +1,20 @@
 [
-  {
-    "id": "53679f81-5207-44ea-ad82-42b0df2c2c62",
-    "name": "Miguel Soeth",
-    "email": "miguel@gmail.com",
-    "user": "miguel.soeth",
-    "pwd": "f50970ecca62fc918a9b303d52252b7e69b1f22ff755b6620d82ed1ad5a6c78e",
-    "level": "admin",
-    "status": "on"
-  },
-  {
-    "id": "52dbed86-f966-4dc2-a8e0-2aa0943d39ad",
-    "name": "user",
-    "email": "user@mail",
-    "user": "user",
-    "pwd": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
-    "level": "admin",
-    "status": "on"
-  },
-  {
-    "id": "507da10d-fee9-4a78-b5f4-bfee4ee0c407",
-    "name": "Fake name",
-    "email": "name@email",
-    "user": "fake.name",
-    "pwd": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
-    "level": "user",
-    "status": "on"
-  }
+    {
+        "id": "53679f81-5207-44ea-ad82-42b0df2c2c62",
+        "name": "Miguel Soeth",
+        "email": "miguel@gmail.com",
+        "user": "miguel.soeth",
+        "pwd": "f50970ecca62fc918a9b303d52252b7e69b1f22ff755b6620d82ed1ad5a6c78e",
+        "level": "admin",
+        "status": "on"
+    },
+    {
+        "id": "4480a5fa-5dfd-4b3c-9523-11b398b96182",
+        "name": "User",
+        "email": "user@mail",
+        "user": "user",
+        "pwd": "04f8996da763b7a969b1028ee3007569eaf3a635486ddab211d512c85b9df8fb",
+        "level": "admin",
+        "status": "on"
+    }
 ]
