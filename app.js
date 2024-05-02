@@ -7,6 +7,7 @@ const autenticador = require('./middlewares/autenticador');
 //routes
 const usersRouter = require('./routes/usersRouter');
 const accountsRouter = require('./routes/accountsRouter');
+const categoriesRouter = require('./routes/categoriesRouter');
 //app
 const app = express();
 const PORT = 3000;
@@ -55,6 +56,8 @@ app.get('/admin', (req, res) => {
 app.use('/admin', usersRouter);
 
 app.use('/admin', accountsRouter);
+
+app.use('/admin', categoriesRouter);
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

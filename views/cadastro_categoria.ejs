@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Usuário</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 110vh;
+            margin: 0;
+            padding: 0;
+        }
+        #lista-usuarios {
+            width: 60%;
+            height: 100vh;
+            padding: 0px 50px;
+        }
+        #lista-usuarios ul {
+            padding: 0px;
+        }
+        #lista-usuarios ul li {
+            padding: 15px;
+            list-style-type: none;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+            border-radius: 20px;
+            background-color: white;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px;
+
+            div{
+                flex-wrap: nowrap;
+                white-space: nowrap;
+                width: min-content;
+                padding: 10px;
+                background-color: rgb(255, 255, 255);
+                border: 1px solid #022840;
+                border-radius: 10px;
+            }
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s ease;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        #botao-editar {
+            float: right;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            cursor: pointer;
+            background-color: #007bff;
+            transition: background-color 0.2s ease;
+
+            &:hover{
+                background-color: #0056b3;
+            }
+        }
+        #botao-deletar {
+            float: right;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            margin-right: 10px;
+            cursor: pointer;
+            background-color: darkred;
+            transition: background-color 0.2s ease;
+
+            &:hover{
+                background-color: rgb(189, 29, 29);
+            }
+        }
+        h1 {
+            display: flex;
+        }
+        #home {
+            text-decoration: none;
+            font-size: 15px;
+            margin-right: 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: white;
+            background-color: #007bff;
+            padding: 10px;
+            border: none;
+        }
+
+        #cadastro-usuario{
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            background-color: white;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px;
+            border-radius: 20px;
+            margin-top: 60px;
+
+            h2{
+                margin-top: 0px;
+            }
+        }
+    </style>
+</head>
+<body>    
+    <div id="lista-usuarios">
+        
+        <h1><a href="/admin" id="home">Home</a> Lista de categorias</h1>
+        <ul>
+            <% categories.forEach(category => { %>
+                <li>                    
+                    <div>
+                        <strong>Descriçao:</strong> <%= category.description %>
+                    </div>
+                    <div>
+                        <strong>Tipo:</strong> <%= category.type %>
+                    </div>
+                    <div>
+                        <strong>ID:</strong> <span id="id"><%= category.id %></span>
+                    </div>
+                    <span>
+                        <button id="botao-editar">Editar</button>
+                        <button id="botao-deletar">Deletar</button><br>
+                    </span>         
+                </li>                
+            <% }); %>
+        </ul>
+    </div>
+    <div id="cadastro-usuario">
+        <h2>Cadastro de Conta</h2>
+        <form id="userForm" action="/admin/cadastrar-categoria" method="POST">
+            <label for="description">Descriçao:</label>
+            <input type="text" id="description" name="description" required><br>
+
+            <label for="type">Tipo:</label>
+            <select id="type" name="type" required>
+                <option value="Receita">Receita</option>
+                <option value="Despesa">Despesa</option>
+            </select><br>
+
+            <button type="submit">Cadastrar</button>
+        </form>
+    </div>    
+    <script>
+        function deleteCategory(id) {
+            if (confirm("Tem certeza que deseja deletar essa categoria?")) {
+                fetch(`/admin/deletar-categoria/${id}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    } else {
+                        throw new Error('Erro ao deletar');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        }
+        function editCategory(id) {
+            console.log("editando categoria ", id);
+            window.location.href = `/admin/editar-categoria/${id}`;
+        }
+        document.querySelectorAll('button#botao-deletar').forEach(button => {
+            button.addEventListener('click', () => {
+                const categoryId = button.parentNode.parentNode.querySelector('#id').textContent;            
+                deleteCategory(categoryId);
+            });
+        });
+
+        document.querySelectorAll('button#botao-editar').forEach(button => {
+            button.addEventListener('click', () => {
+                const categoryId = button.parentNode.parentNode.querySelector('#id').textContent;
+                editCategory(categoryId);
+            });
+        });
+    </script>
+</body>
+</html>

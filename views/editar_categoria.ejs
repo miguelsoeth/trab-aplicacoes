@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar usuário</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        #botao-editar {
+            float: right;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            cursor: pointer;
+            background-color: #007bff;
+        }
+        #botao-deletar {
+            float: right;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            margin-right: 10px;
+            cursor: pointer;
+            background-color: darkred;
+        }
+        h1 {
+            display: flex;
+        }
+        #home {
+            text-decoration: none;
+            font-size: 15px;
+            margin-right: 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: white;
+            background-color: #007bff;
+            padding: 10px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="editar-usuario">
+        <a href="/admin/cadastrar-categoria" id="home">Voltar</a> 
+        <h2>Editar categoria</h2>
+        <form id="userForm" action="/admin/editar-categoria" method="POST">
+            <label for="description">Descriçao:</label>
+            <input type="text" id="description" name="description" value="<%= category.description %>"  required><br>
+
+            <label for="type">Tipo:</label>
+            <select id="type" name="type" required>
+                <option value="Receita" <%= category.type === 'Receita' ? 'selected' : '' %>>Receita</option>
+                <option value="Despesa" <%= category.type === 'Despesa' ? 'selected' : '' %>>Despesa</option>
+            </select><br>
+
+            <button type="submit">Editar</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('userForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(this);
+            const jsonData = {};
+            formData.forEach((value, key) => {
+                jsonData[key] = value;
+            });
+
+            console.log(jsonData);
+            const categoryId = window.location.pathname.split('/').pop();
+            
+            fetch(`/admin/editar-categoria/${categoryId}`, {
+                method: 'PUT',
+                body: JSON.stringify(jsonData),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Network response was not ok.');
+            })
+            .then(data => {
+                console.log('Category updated:', data);
+                window.location.href = `http://localhost:3000/admin/cadastrar-categoria`;
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+        });
+    </script>
+</body>
+</html>
