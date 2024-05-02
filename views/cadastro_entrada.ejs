@@ -50,6 +50,8 @@
             margin-bottom: 5px;
         }
         input[type="text"],
+        input[type="date"],
+        input[type="number"],
         input[type="email"],
         input[type="password"],
         select {
@@ -137,19 +139,41 @@
 <body>    
     <div id="lista-usuarios">
         
-        <h1><a href="/admin" id="home">Home</a> Lista de categorias</h1>
+        <h1><a href="/admin" id="home">Home</a> Lista de Receitas/Despesas</h1>
         <ul>
-            <% categories.forEach(category => { %>
-                <li>                    
+            <% entries.forEach(entry => { %>
+                <li>
                     <div>
-                        <strong>Descrição:</strong> <%= category.description %>
+                        <strong>ID:</strong> <span id="id"><%= entry.id %></span>
                     </div>
                     <div>
-                        <strong>Tipo:</strong> <%= category.type %>
+                        <strong>Tipo:</strong> <%= entry.type %>
+                    </div>                    
+                    <div>
+                        <strong>Categoria:</strong> <%= entry.categories %>
                     </div>
                     <div>
-                        <strong>ID:</strong> <span id="id"><%= category.id %></span>
+                        <strong>Descrição:</strong> <%= entry.description %>
                     </div>
+                    <div>
+                        <strong>Valor:</strong> <%= entry.value %>
+                    </div>
+                    <div>
+                        <strong>Data de vencimento:</strong> <%= entry.due_date %>
+                    </div>
+                    <div>
+                        <strong>Data de pagamento:</strong> <%= entry.payment_date %>
+                    </div>
+                    <div>
+                        <strong>Conta:</strong> <%= entry.account %>
+                    </div>
+                    <div>
+                        <strong>Status:</strong> <%= entry.status %>
+                    </div>
+                    <div>
+                        <strong>Comentários:</strong> <%= entry.comments %>
+                    </div>
+                   
                     <span>
                         <button id="botao-editar">Editar</button>
                         <button id="botao-deletar">Deletar</button><br>
@@ -159,24 +183,57 @@
         </ul>
     </div>
     <div id="cadastro-usuario">
-        <h2>Cadastro de Conta</h2>
-        <form id="userForm" action="/admin/cadastrar-categoria" method="POST">
-            <label for="description">Descriçao:</label>
-            <input type="text" id="description" name="description" required><br>
-
+        <h2>Cadastro de Receita/Despesa</h2>
+        <form id="userForm" action="/admin/cadastrar-entrada" method="POST">
             <label for="type">Tipo:</label>
             <select id="type" name="type" required>
                 <option value="Receita">Receita</option>
                 <option value="Despesa">Despesa</option>
             </select><br>
 
+            <label for="categories">Categoria:</label>
+            <select id="categories" name="categories" required>
+            </select><br>
+
+            <label for="description">Descriçao:</label>
+            <input type="text" id="description" name="description" required><br>
+
+            <label for="value">Valor:</label>
+            <input type="number" id="value" name="value" step="0.1" required><br>
+
+            <label for="due_date">Data vencimento:</label>
+            <input type="date" id="due_date" name="due_date" required><br>
+
+            <label for="payment_date">Data pagamento:</label>
+            <input type="date" id="payment_date" name="payment_date"><br>
+            
+            <label for="account">Conta:</label>
+            <select id="account" name="account" required>
+                <option value="Conta Corrente">Conta Corrente</option>
+                <option value="Conta Poupança">Conta Poupança</option>
+            </select><br>
+
+            <label for="status">Status:</label>
+            <select id="status" name="status" required>
+                <option value="Lancada">Lancada</option>
+                <option value="Confirmada">Confirmada</option>
+                <option value="Paga">Paga</option>
+                <option value="Cancelada">Cancelada</option>
+            </select><br>
+
+            <label for="comments">Comentarios:</label>
+            <select id="comments" name="comments" required>
+                <option value="on">On</option>
+                <option value="off">Off</option>
+            </select><br>
+
             <button type="submit">Cadastrar</button>
         </form>
     </div>    
     <script>
-        function deleteCategory(id) {
-            if (confirm("Tem certeza que deseja deletar essa categoria?")) {
-                fetch(`/admin/deletar-categoria/${id}`, {
+        function deleteEntry(id) {
+            if (confirm("Tem certeza que deseja deletar essa entrada?")) {
+                fetch(`/admin/deletar-entrada/${id}`, {
                     method: 'DELETE'
                 })
                 .then(response => {
@@ -191,23 +248,42 @@
                 });
             }
         }
-        function editCategory(id) {
-            console.log("editando categoria ", id);
-            window.location.href = `/admin/editar-categoria/${id}`;
+        function editEntry(id) {
+            console.log("editando entrada ", id);
+            window.location.href = `/admin/editar-entrada/${id}`;
         }
         document.querySelectorAll('button#botao-deletar').forEach(button => {
             button.addEventListener('click', () => {
-                const categoryId = button.parentNode.parentNode.querySelector('#id').textContent;            
-                deleteCategory(categoryId);
+                const entryId = button.parentNode.parentNode.querySelector('#id').textContent;            
+                deleteEntry(entryId);
             });
         });
 
         document.querySelectorAll('button#botao-editar').forEach(button => {
             button.addEventListener('click', () => {
-                const categoryId = button.parentNode.parentNode.querySelector('#id').textContent;
-                editCategory(categoryId);
+                const entryId = button.parentNode.parentNode.querySelector('#id').textContent;
+                editEntry(entryId);
             });
         });
+
+        const typeDropdown = document.getElementById('type');
+        const categoriesDropdown = document.getElementById('categories');
+        const categoriesList = <%- JSON.stringify(categoriesList) %>;
+
+        typeDropdown.addEventListener('change', () => {
+        const selectedType = typeDropdown.value;
+        categoriesDropdown.innerHTML = "";
+        const filteredCategories = categoriesList.filter(category => category.type === selectedType);
+        filteredCategories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category.description;
+                option.textContent = category.description;
+                categoriesDropdown.appendChild(option);
+            });
+        });
+
+        // Trigger change event initially to populate categories based on initial type value
+        typeDropdown.dispatchEvent(new Event('change'));
     </script>
 </body>
 </html>

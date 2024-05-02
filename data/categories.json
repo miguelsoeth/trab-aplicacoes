@@ -8,5 +8,15 @@
     "id": "8a51c03d-66e7-4868-9251-28a9661c3d2a",
     "description": "Salario",
     "type": "Receita"
+  },
+  {
+    "id": "01ad41ad-d933-47f4-829c-3e242421f66a",
+    "description": "Carro",
+    "type": "Despesa"
+  },
+  {
+    "id": "28465fd8-879c-4dbb-ada1-75fa02d02ee9",
+    "description": "Aposento",
+    "type": "Receita"
   }
 ]

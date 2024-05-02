@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar usuário</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="date"],
+        input[type="number"],
+        input[type="email"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        #botao-editar {
+            float: right;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            cursor: pointer;
+            background-color: #007bff;
+        }
+        #botao-deletar {
+            float: right;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            margin-right: 10px;
+            cursor: pointer;
+            background-color: darkred;
+        }
+        h1 {
+            display: flex;
+        }
+        #home {
+            text-decoration: none;
+            font-size: 15px;
+            margin-right: 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: white;
+            background-color: #007bff;
+            padding: 10px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="editar-usuario">
+        <a href="/admin/cadastrar-entrada" id="home">Voltar</a> 
+        <h2>Editar entrada</h2>
+        <form id="userForm" action="/admin/editar-entrada" method="POST">
+            <label for="type">Tipo:</label>
+            <select id="type" name="type" required>
+                <option value="Receita" <%= entry.type === 'Receita' ? 'selected' : '' %>>Receita</option>
+                <option value="Despesa" <%= entry.type === 'Despesa' ? 'selected' : '' %>>Despesa</option>
+            </select><br>
+
+            <label for="categories">Categoria:</label>
+            <select id="categories" name="categories" value="<%= entry.categories %>" required>
+            </select><br>
+
+            <label for="description">Descriçao:</label>
+            <input type="text" id="description" name="description" value="<%= entry.description %>" required><br>
+
+            <label for="value">Valor:</label>
+            <input type="number" id="value" name="value" step="0.1" value="<%= entry.value %>" required><br>
+
+            <label for="due_date">Data vencimento:</label>
+            <input type="date" id="due_date" name="due_date" value="<%= entry.due_date %>" required><br>
+
+            <label for="payment_date">Data pagamento:</label>
+            <input type="date" id="payment_date" name="payment_date" value="<%= entry.payment_date %>"><br>
+            
+            <label for="account">Conta:</label>
+            <select id="account" name="account" required>
+                <option value="Conta Corrente" <%= entry.account === 'Conta Corrente' ? 'selected' : '' %>>Conta Corrente</option>
+                <option value="Conta Poupança" <%= entry.account === 'Conta Poupança' ? 'selected' : '' %>>Conta Poupança</option>
+            </select><br>
+
+            <label for="status">Status:</label>
+            <select id="status" name="status" required>
+                <option value="Lancada" <%= entry.status === 'Lancada' ? 'selected' : '' %>>Lancada</option>
+                <option value="Confirmada" <%= entry.status === 'Confirmada' ? 'selected' : '' %>>Confirmada</option>
+                <option value="Paga" <%= entry.status === 'Paga' ? 'selected' : '' %>>Paga</option>
+                <option value="Cancelada" <%= entry.status === 'Cancelada' ? 'selected' : '' %>>Cancelada</option>
+            </select><br>
+
+            <label for="comments">Comentarios:</label>
+            <select id="comments" name="comments" required>
+                <option value="on" <%= entry.comments === 'on' ? 'selected' : '' %>>On</option>
+                <option value="off" <%= entry.comments === 'off' ? 'selected' : '' %>>Off</option>
+            </select><br>
+
+            <button type="submit">Editar</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('userForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(this);
+            const jsonData = {};
+            formData.forEach((value, key) => {
+                jsonData[key] = value;
+            });
+
+            console.log(jsonData);
+            const entryId = window.location.pathname.split('/').pop();
+            
+            fetch(`/admin/editar-entrada/${entryId}`, {
+                method: 'PUT',
+                body: JSON.stringify(jsonData),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Network response was not ok.');
+            })
+            .then(data => {
+                console.log('Entry updated:', data);
+                window.location.href = `http://localhost:3000/admin/cadastrar-entrada`;
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+        });
+
+        const typeDropdown = document.getElementById('type');
+        const categoriesDropdown = document.getElementById('categories');
+        const categoriesList = <%- JSON.stringify(categoriesList) %>;
+        const entryCategories = <%- JSON.stringify(entry.categories) %>;
+        typeDropdown.addEventListener('change', () => {
+        const selectedType = typeDropdown.value;
+        categoriesDropdown.innerHTML = "";
+        const filteredCategories = categoriesList.filter(category => category.type === selectedType);
+        filteredCategories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category.description;
+                option.textContent = category.description;
+                categoriesDropdown.appendChild(option);
+            });
+        });
+
+        typeDropdown.dispatchEvent(new Event('change'));
+        categoriesDropdown.value = `${entryCategories}`;
+    </script>
+</body>
+</html>
