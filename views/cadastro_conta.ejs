@@ -137,28 +137,19 @@
 <body>    
     <div id="lista-usuarios">
         
-        <h1><a href="/admin" id="home">Home</a> Lista de usuários</h1>
+        <h1><a href="/admin" id="home">Home</a> Lista de contas</h1>
         <ul>
-            <% users.forEach(user => { %>
+            <% accounts.forEach(account => { %>
                 <li>                    
                     <div>
-                        <strong>Name:</strong> <%= user.name %>
+                        <strong>Descriçao:</strong> <%= account.description %>
                     </div>
                     <div>
-                        <strong>Email:</strong> <%= user.email %>
+                        <strong>Conta:</strong> <%= account.comments %>
                     </div>
                     <div>
-                        <strong>User:</strong> <%= user.user %>
+                        <strong>ID:</strong> <span id="id"><%= account.id %></span>
                     </div>
-                    <div>
-                        <strong>ID:</strong> <span id="id"><%= user.id %></span>
-                    </div>
-                    <div>
-                        <strong>Level:</strong> <%= user.level %>
-                    </div>
-                    <div>
-                        <strong>Status:</strong> <%= user.status %>   
-                    </div>        
                     <span>
                         <button id="botao-editar">Editar</button>
                         <button id="botao-deletar">Deletar</button><br>
@@ -168,39 +159,27 @@
         </ul>
     </div>
     <div id="cadastro-usuario">
-        <h2>Cadastro de Usuário</h2>
-        <form id="userForm" action="/admin/cadastrar-usuario" method="POST">
-            <label for="name">Nome:</label>
-            <input type="text" id="name" name="name" required><br>
+        <h2>Cadastro de Conta</h2>
+        <form id="userForm" action="/admin/cadastrar-conta" method="POST">
+            <label for="banco">Banco:</label>
+            <input type="text" id="banco" name="banco" required><br>
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required><br>
+            <label for="conta">Num. da conta:</label>
+            <input type="text" id="conta" name="conta" required><br>
 
-            <label for="user">Usuário:</label>
-            <input type="text" id="user" name="user" required><br>
-
-            <label for="password">Senha:</label>
-            <input type="password" id="password" name="pwd" required><br>
-
-            <label for="level">Nível:</label>
-            <select id="level" name="level" required>
-                <option value="admin">Admin</option>
-                <option value="user">Usuário</option>
-            </select><br>
-
-            <label for="status">Status:</label>
-            <select id="status" name="status" required>
-                <option value="on">On</option>
-                <option value="off">Off</option>
+            <label for="tipo">Tipo:</label>
+            <select id="tipo" name="tipo" required>
+                <option value="Conta Corrente">Conta Corrente</option>
+                <option value="Conta Poupança">Conta Poupança</option>
             </select><br>
 
             <button type="submit">Cadastrar</button>
         </form>
     </div>    
     <script>
-        function deleteUser(id) {
-            if (confirm("Tem certeza que deseja deletar esse usuário?")) {
-                fetch(`/admin/deletar-usuario/${id}`, {
+        function deleteAccount(id) {
+            if (confirm("Tem certeza que deseja deletar essa conta?")) {
+                fetch(`/admin/deletar-conta/${id}`, {
                     method: 'DELETE'
                 })
                 .then(response => {
@@ -215,21 +194,21 @@
                 });
             }
         }
-        function editUser(id) {
+        function editAccount(id) {
             console.log("editando usuario ", id);
-            window.location.href = `/admin/editar-usuario/${id}`;
+            window.location.href = `/admin/editar-conta/${id}`;
         }
-        document.querySelectorAll('#lista-usuarios button#botao-deletar').forEach(button => {
+        document.querySelectorAll('button#botao-deletar').forEach(button => {
             button.addEventListener('click', () => {
-                const userId = button.parentNode.parentNode.querySelector('#id').textContent;            
-                deleteUser(userId);
+                const accountId = button.parentNode.parentNode.querySelector('#id').textContent;            
+                deleteAccount(accountId);
             });
         });
 
-        document.querySelectorAll('#lista-usuarios button#botao-editar').forEach(button => {
+        document.querySelectorAll('button#botao-editar').forEach(button => {
             button.addEventListener('click', () => {
-                const userId = button.parentNode.parentNode.querySelector('#id').textContent;
-                editUser(userId);
+                const accountId = button.parentNode.parentNode.querySelector('#id').textContent;
+                editAccount(accountId);
             });
         });
     </script>
