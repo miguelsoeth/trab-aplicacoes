@@ -8,7 +8,7 @@ const users = JSON.parse(fs.readFileSync('./data/users.json'));
 
 router.get('/cadastrar-usuario', (req, res) => {
     if (req.session.user && req.session.user.level === 'admin') {
-        res.render('cadastro_usuario', { users: users });
+        res.render('cadastro/cadastro_usuario', { users: users });
     } else {
         res.redirect('/admin');
     }
@@ -62,7 +62,7 @@ router.get('/editar-usuario/:id', (req, res) => {
     if (req.session.user && req.session.user.level === 'admin') {
         const userId = req.params.id;
         const index = users.findIndex(user => user.id === userId);
-        res.render('editar_usuario', { usuario: users[index] });
+        res.render('editar/editar_usuario', { usuario: users[index] });
     } else {
         res.redirect('/admin');
     }

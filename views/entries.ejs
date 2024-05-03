@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lançamentos</title>
+    <style>
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0px 50px;
+        }
+
+        .listar-mes {
+            padding: 20px 0px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .id {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><a href="/admin" id="home">Home</a> Lançamentos</h1>
+        <a class="button" href="/admin/cadastrar-entrada">Cadastrar/Editar lançamento</a>
+    </div>
+
+    <form class="listar-mes" action="/monthly-entries" method="GET">
+        <label for="month">Listar Lançamentos por Mês:</label>
+        <input type="month" id="month" name="month">
+        <button type="submit">Buscar</button>
+    </form>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Tipo</th>
+                <th>Categorias</th>
+                <th>Descrição</th>
+                <th>Valor</th>
+                <th>Data de Vencimento</th>
+                <th>Data de Pagamento</th>
+                <th>Conta</th>
+                <th>Status</th>
+                <th>Comentários</th>
+            </tr>
+        </thead>
+        <tbody>
+            <%
+            entries.sort((a, b) => new Date(a.due_date) - new Date(b.due_date));
+            entries.forEach(function(entry) {
+                function formatDate(dateString) {
+                    const date = new Date(dateString);
+                    const day = date.getDate().toString().padStart(2, '0');
+                    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based
+                    const year = date.getFullYear();
+                    return `${day}/${month}/${year}`;
+                }
+                %>
+                <tr>
+                    <td class="id"><%= entry.id %></td>
+                    <td><%= entry.type %></td>
+                    <td><%= entry.categories %></td>
+                    <td><%= entry.description %></td>
+                    <td><%= entry.value %></td>
+                    <td><%= entry.due_date %></td>
+                    <td><%= entry.payment_date %></td>
+                    <td><%= entry.account %></td>
+                    <td><%= entry.status %></td>
+                    <td><%= entry.comments %></td>
+                    <td>
+                        <button id="botao-confirmar">Confirmar</button>
+                        <button id="botao-pagar">Pagar</button>
+                        <button id="botao-cancelar">Cancelar</button>
+                    </td>              
+                </tr>                
+            <% }); %>
+        </tbody>
+    </table>
+</body>
+</html>

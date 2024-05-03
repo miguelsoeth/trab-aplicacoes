@@ -7,7 +7,7 @@ const categories = JSON.parse(fs.readFileSync('./data/categories.json'));
 
 router.get('/cadastrar-categoria', (req, res) => {
     if (req.session.user && req.session.user.level === 'admin') {
-        res.render('cadastro_categoria', { categories: categories });
+        res.render('cadastro/cadastro_categoria', { categories: categories });
     } else {
         res.redirect('/admin');
     }
@@ -47,7 +47,7 @@ router.get('/editar-categoria/:id', (req, res) => {
     if (req.session.user && req.session.user.level === 'admin') {
         const categoryId = req.params.id;
         const index = categories.findIndex(category => category.id === categoryId);
-        res.render('editar_categoria', { category: categories[index] });
+        res.render('editar/editar_categoria', { category: categories[index] });
     } else {
         res.redirect('/admin');
     }

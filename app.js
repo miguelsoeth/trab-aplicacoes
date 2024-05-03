@@ -2,6 +2,7 @@
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
+const fs = require('fs');
 //middlewares
 const autenticador = require('./middlewares/autenticador');
 //routes
@@ -61,6 +62,11 @@ app.use('/admin', accountsRouter);
 app.use('/admin', categoriesRouter);
 
 app.use('/admin', entriesRouter);
+
+app.get('/lancamentos', (req, res) => {
+    const entries = JSON.parse(fs.readFileSync('./data/entries.json'));
+    res.render('entries', { entries });
+});
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

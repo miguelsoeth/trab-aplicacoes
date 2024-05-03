@@ -7,7 +7,7 @@ const accounts = JSON.parse(fs.readFileSync('./data/accounts.json'));
 
 router.get('/cadastrar-conta', (req, res) => {
     if (req.session.user && req.session.user.level === 'admin') {
-        res.render('cadastro_conta', { accounts: accounts });
+        res.render('cadastro/cadastro_conta', { accounts: accounts });
     } else {
         res.redirect('/admin');
     }
@@ -58,7 +58,7 @@ router.get('/editar-conta/:id', (req, res) => {
             conta: conta,
             tipo: accounts[index].description
         };
-        res.render('editar_conta', { account: editAccount });
+        res.render('editar/editar_conta', { account: editAccount });
     } else {
         res.redirect('/admin');
     }

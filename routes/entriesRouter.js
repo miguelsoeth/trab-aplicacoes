@@ -8,7 +8,7 @@ const entries = JSON.parse(fs.readFileSync('./data/entries.json'));
 router.get('/cadastrar-entrada', (req, res) => {
     if (req.session.user && req.session.user.level === 'admin') {
         const categories = JSON.parse(fs.readFileSync('./data/categories.json'));
-        res.render('cadastro_entrada', { entries: entries, categoriesList: categories });
+        res.render('cadastro/cadastro_entrada', { entries: entries, categoriesList: categories });
     } else {
         res.redirect('/admin');
     }
@@ -46,7 +46,7 @@ router.get('/editar-entrada/:id', (req, res) => {
         const entryId = req.params.id;
         const index = entries.findIndex(entry => entry.id === entryId);
         const categories = JSON.parse(fs.readFileSync('./data/categories.json'));
-        res.render('editar_entrada', { entry: entries[index], categoriesList: categories });
+        res.render('editar/editar_entrada', { entry: entries[index], categoriesList: categories });
     } else {
         res.redirect('/admin');
     }

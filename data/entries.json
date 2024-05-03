@@ -1,26 +1,38 @@
 [
-  {
-    "id": "0bddb40a-890c-41ad-9e72-506b352e64e3",
-    "type": "Receita",
-    "categories": "Salario",
-    "description": "salario do mes",
-    "value": "3000",
-    "due_date": "2024-05-02",
-    "payment_date": "2024-05-04",
-    "account": "Conta Corrente",
-    "status": "Confirmada",
-    "comments": "on"
-  },
-  {
-    "id": "35156dc5-44db-4c4e-b4e1-f28c060cf6af",
-    "type": "Despesa",
-    "categories": "Carro",
-    "description": "parcela",
-    "value": "800",
-    "due_date": "2024-05-02",
-    "payment_date": "2024-05-01",
-    "account": "Conta Corrente",
-    "status": "Lancada",
-    "comments": "on"
-  }
+    {
+        "id": "0bddb40a-890c-41ad-9e72-506b352e64e3",
+        "type": "Receita",
+        "categories": "Salario",
+        "description": "salario do mes",
+        "value": "3000",
+        "due_date": "2024-05-02",
+        "payment_date": "2024-05-04",
+        "account": "Conta Corrente",
+        "status": "Confirmada",
+        "comments": "on"
+    },
+    {
+        "id": "35156dc5-44db-4c4e-b4e1-f28c060cf6af",
+        "type": "Despesa",
+        "categories": "Carro",
+        "description": "parcela",
+        "value": "800",
+        "due_date": "2024-05-01",
+        "payment_date": "2024-05-01",
+        "account": "Conta Corrente",
+        "status": "Lancada",
+        "comments": "on"
+    },
+    {
+        "id": "ce2c8c87-4700-440e-9f70-fa869eaff19a",
+        "type": "Receita",
+        "categories": "Aposento",
+        "description": "do mes",
+        "value": "1200",
+        "due_date": "2024-05-10",
+        "payment_date": "2024-06-01",
+        "account": "Conta Corrente",
+        "status": "Lancada",
+        "comments": "on"
+    }
 ]
