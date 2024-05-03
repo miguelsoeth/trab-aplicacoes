@@ -67,4 +67,49 @@ router.put('/editar-entrada/:id', (req, res) => {
     }
 });
 
+router.put('/confirmar-entrada/:id', (req, res) => {
+    const entryId = req.params.id;
+    const index = entries.findIndex(entry => entry.id === entryId);
+    if (index !== -1) {
+        entries[index] = {
+            ...entries[index],
+            status: "Confirmada"
+        };
+        fs.writeFileSync('./data/entries.json', JSON.stringify(entries, null, 2));
+        res.status(200).json(entries[index]);
+    } else {
+        res.sendStatus(404);
+    }
+});
+
+router.put('/cancelar-entrada/:id', (req, res) => {
+    const entryId = req.params.id;
+    const index = entries.findIndex(entry => entry.id === entryId);
+    if (index !== -1) {
+        entries[index] = {
+            ...entries[index],
+            status: "Cancelada"
+        };
+        fs.writeFileSync('./data/entries.json', JSON.stringify(entries, null, 2));
+        res.status(200).json(entries[index]);
+    } else {
+        res.sendStatus(404);
+    }
+});
+
+router.put('/pagar-entrada/:id', (req, res) => {
+    const entryId = req.params.id;
+    const index = entries.findIndex(entry => entry.id === entryId);
+    if (index !== -1) {
+        entries[index] = {
+            ...entries[index],
+            status: "Paga"
+        };
+        fs.writeFileSync('./data/entries.json', JSON.stringify(entries, null, 2));
+        res.status(200).json(entries[index]);
+    } else {
+        res.sendStatus(404);
+    }
+});
+
 module.exports = router;

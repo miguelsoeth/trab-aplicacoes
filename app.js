@@ -29,9 +29,16 @@ app.get('/', (req, res) => {
     res.redirect('/login');
 });
 
+app.get('/usuario-nao-ativado', (req, res) => {
+    res.render('off.ejs', { nome: req.session.user.name });
+});
+
 app.get('/login', (req, res) => {
-    if (req.session.user) {
+    if (req.session.user && req.session.user.level === 'admin') {
         res.redirect('/admin');
+    }
+    else if (req.session.user) {
+        res.redirect('/lancamentos');
     }
     else {
         res.render('login');
@@ -39,7 +46,15 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/login', autenticador, (req, res) => {
-    res.redirect('/admin');
+    if (req.session.user.status === 'off') {
+        res.redirect('/usuario-nao-ativado');
+    }
+    else if (req.session.user && req.session.user.level === 'admin') {
+        res.redirect('/admin');
+    }
+    else {
+        res.redirect('/lancamentos');
+    }    
 });
 
 app.get('/logout', (req, res) => {
@@ -63,9 +78,25 @@ app.use('/admin', categoriesRouter);
 
 app.use('/admin', entriesRouter);
 
-app.get('/lancamentos', (req, res) => {
-    const entries = JSON.parse(fs.readFileSync('./data/entries.json'));
-    res.render('entries', { entries });
+app.get('/lancamentos', (req, res) => {    
+    if (req.session.user) {
+        const entries = JSON.parse(fs.readFileSync('./data/entries.json'));
+        const { mes } = req.query;
+        
+        let filteredEntries = entries;
+        if (mes) {
+            const [year, month] = mes.split('-'); // month - 1 because month is zero-indexed in JavaScript Date objects
+            filteredEntries = entries.filter(entry => {
+                const [entryYear, entryMonth, entryDay] = entry.due_date.split('-');
+                //console.log("FILTER", year, month, "ENTRY", entryYear, entryMonth, "RESULT", entryYear === year && entryMonth === month);
+                return entryYear === year && entryMonth === month;
+            });
+        }
+        const level = req.session.user.level;
+        res.render('entries', { entries: filteredEntries, level});
+    } else {
+        res.redirect('/login');
+    }    
 });
 
 app.listen(PORT, () => {

@@ -1,20 +1,29 @@
 [
-  {
-    "id": "53679f81-5207-44ea-ad82-42b0df2c2c62",
-    "name": "Miguel Soeth",
-    "email": "miguel@gmail.com",
-    "user": "miguel.soeth",
-    "pwd": "f50970ecca62fc918a9b303d52252b7e69b1f22ff755b6620d82ed1ad5a6c78e",
-    "level": "admin",
-    "status": "on"
-  },
-  {
-    "id": "4480a5fa-5dfd-4b3c-9523-11b398b96182",
-    "name": "user",
-    "email": "user@mail",
-    "user": "user",
-    "pwd": "04f8996da763b7a969b1028ee3007569eaf3a635486ddab211d512c85b9df8fb",
-    "level": "admin",
-    "status": "on"
-  }
+    {
+        "id": "3564b0fa-cfd0-4e1b-a354-6574bb80e76a",
+        "name": "Admin",
+        "email": "admin@mail",
+        "user": "admin",
+        "pwd": "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918",
+        "level": "admin",
+        "status": "on"
+    },
+    {
+        "id": "04a4d7fb-de96-4cbe-97d8-1566ece832c0",
+        "name": "User",
+        "email": "user@mail",
+        "user": "user",
+        "pwd": "04f8996da763b7a969b1028ee3007569eaf3a635486ddab211d512c85b9df8fb",
+        "level": "user",
+        "status": "on"
+    },
+    {
+        "id": "5b17f68b-cc69-4f2c-8522-fa9055cb405c",
+        "name": "Off",
+        "email": "off@mail",
+        "user": "off",
+        "pwd": "b4dc66dde806261bdda8607d8707aa727d308cd80272381a5583f63899918467",
+        "level": "user",
+        "status": "off"
+    }
 ]

@@ -12,28 +12,74 @@
             padding: 0px 50px;
         }
 
+        h1 {
+            display: flex;
+            align-items: center;
+        }
+
+        h1 a {
+            margin-right: 25px;
+            font-size: 14px;
+        }
+
         .listar-mes {
             padding: 20px 0px;
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 10px;
+        }
+
+        .default-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 40px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .default-button:hover {
+            background-color: #0056b3;
+        }
+
+        .date-input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
         }
 
         .id {
             display: none;
         }
+
+        .red {
+            color:red;
+        }
+
+        .green {
+            color:green;
+        }
+
+        table {
+            margin: auto;
+        }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1><a href="/admin" id="home">Home</a> Lançamentos</h1>
-        <a class="button" href="/admin/cadastrar-entrada">Cadastrar/Editar lançamento</a>
+        <h1><a href="/admin" class="default-button admin-only">Home</a> Lançamentos</h1>
+        <div>
+            <a class="default-button admin-only" href="/admin/cadastrar-entrada">Cadastrar/Editar lançamento</a>
+            <a class="default-button" href="/logout">Logout</a>
+        </div>        
     </div>
 
-    <form class="listar-mes" action="/monthly-entries" method="GET">
-        <label for="month">Listar Lançamentos por Mês:</label>
-        <input type="month" id="month" name="month">
-        <button type="submit">Buscar</button>
+    <form class="listar-mes" action="/lancamentos" method="GET">
+        <label for="mes">Listar Lançamentos por Mês: </label>        
+        <input type="month" id="mes" name="mes" class="date-input">
+        <button type="submit" class="default-button">Buscar</button>
     </form>
     
     <table>
@@ -47,7 +93,7 @@
                 <th>Data de Pagamento</th>
                 <th>Conta</th>
                 <th>Status</th>
-                <th>Comentários</th>
+                <!-- <th>Comentários</th> -->
             </tr>
         </thead>
         <tbody>
@@ -55,32 +101,122 @@
             entries.sort((a, b) => new Date(a.due_date) - new Date(b.due_date));
             entries.forEach(function(entry) {
                 function formatDate(dateString) {
-                    const date = new Date(dateString);
-                    const day = date.getDate().toString().padStart(2, '0');
-                    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based
-                    const year = date.getFullYear();
+                    const [year, month, day] = dateString.split('-');
                     return `${day}/${month}/${year}`;
                 }
+                function addRS(amount) {
+                    return `R$ ${amount}`;
+                }
                 %>
-                <tr>
+                <tr class="<%= entry.type === 'Despesa' ? 'red' : 'green' %>" <%= entry.status === 'Cancelada' ? 'style=text-decoration:line-through' : '' %>>
                     <td class="id"><%= entry.id %></td>
                     <td><%= entry.type %></td>
                     <td><%= entry.categories %></td>
                     <td><%= entry.description %></td>
-                    <td><%= entry.value %></td>
-                    <td><%= entry.due_date %></td>
-                    <td><%= entry.payment_date %></td>
+                    <td><%= addRS(entry.value) %></td>
+                    <td><%= formatDate(entry.due_date) %></td>
+                    <td><%= formatDate(entry.payment_date) %></td>
                     <td><%= entry.account %></td>
                     <td><%= entry.status %></td>
-                    <td><%= entry.comments %></td>
+                    <!-- <td><%= entry.comments %></td> -->
                     <td>
-                        <button id="botao-confirmar">Confirmar</button>
-                        <button id="botao-pagar">Pagar</button>
-                        <button id="botao-cancelar">Cancelar</button>
-                    </td>              
+                        <button class="default-button botao-confirmar admin-only">Confirmar</button>
+                        <button class="default-button botao-pagar admin-only">Pagar</button>
+                        <button class="default-button botao-cancelar admin-only">Cancelar</button>
+                    </td>
                 </tr>                
             <% }); %>
         </tbody>
     </table>
+    <script>
+        // Fetch user level from server
+        const level = <%- JSON.stringify(level) %>;        
+        if (level === 'admin') {
+            document.querySelectorAll('.admin-only').forEach(item => {
+                item.style.display = 'inline-block';
+            });
+        }
+        else {
+            document.querySelectorAll('.admin-only').forEach(item => {
+                item.style.display = 'none';
+            });
+        }
+        console.log("LEVEL", level, "RESULT", level === 'admin');
+
+        function cancelEntry(id) {
+            if (confirm("Tem certeza que deseja cancelar essa entrada?")) {
+                fetch(`/admin/cancelar-entrada/${id}`, {
+                    method: 'PUT'
+                })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    } else {
+                        throw new Error('Erro ao cancelar');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        }
+
+        function payEntry(id) {
+            if (confirm("Tem certeza que deseja pagar essa entrada?")) {
+                fetch(`/admin/pagar-entrada/${id}`, {
+                    method: 'PUT'
+                })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    } else {
+                        throw new Error('Erro ao pagar');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        }
+
+        function confirmEntry(id) {
+            if (confirm("Tem certeza que deseja confirmar essa entrada?")) {
+                fetch(`/admin/confirmar-entrada/${id}`, {
+                    method: 'PUT'
+                })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    } else {
+                        throw new Error('Erro ao confirmar');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        }
+
+        document.querySelectorAll('button.botao-confirmar').forEach(button => {
+            button.addEventListener('click', () => {
+                const Id = button.parentNode.parentNode.querySelector('.id').textContent;            
+                confirmEntry(Id);
+            });
+        });
+
+        document.querySelectorAll('button.botao-pagar').forEach(button => {
+            button.addEventListener('click', () => {
+                const Id = button.parentNode.parentNode.querySelector('.id').textContent;
+                payEntry(Id);
+            });
+        });
+
+        document.querySelectorAll('button.botao-cancelar').forEach(button => {
+            button.addEventListener('click', () => {
+                const Id = button.parentNode.parentNode.querySelector('.id').textContent;   
+                cancelEntry(Id);
+            });
+        });
+    </script>
 </body>
 </html>
