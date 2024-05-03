@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .modal {
+      display: none; 
+      position: fixed; 
+      z-index: 1; 
+      left: 0;
+      top: 0;
+      width: 100%;
+      overflow: auto; 
+      background-color: rgba(0,0,0,0.4); 
+    }
+    
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
+    
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .title {
+        justify-content: center;
+        align-items: center;
+    }
+    
+    </style>
+</head>
+<body>
+    <div id="myModal" class="modal">
+        <div class="modal-content">            
+            <span class="close">&times;</span>
+            <h3 class="title">Lançamento do Dia:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Categorias</th>
+                        <th>Descrição</th>
+                        <th>Valor</th>
+                        <th>Data de Vencimento</th>
+                        <th>Data de Pagamento</th>
+                        <th>Conta</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody class="tbody-today">                    
+                </tbody>
+            </table>
+            <h3 class="title">Lançamentos em Atraso:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Categorias</th>
+                        <th>Descrição</th>
+                        <th>Valor</th>
+                        <th>Data de Vencimento</th>
+                        <th>Data de Pagamento</th>
+                        <th>Conta</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody class="tbody-overdue">                    
+                </tbody>
+            </table>             
+        </div>
+    </div>
+    <script>
+        function populateModalToday(data) {
+            var modalContent = document.querySelector('.tbody-today');
+            modalContent.innerHTML = ''; // Clear previous content
+            
+            // Loop through data and create table rows
+            data.forEach(function(entry) {
+                function formatDate(dateString) {
+                const [year, month, day] = dateString.split('-');
+                return `${day}/${month}/${year}`;
+                }
+                function addRS(amount) {
+                return `R$ ${amount}`;
+                }
+                
+                modalContent.innerHTML += `
+                <tr class="${entry.type === 'Despesa' ? 'red' : 'green'}" ${entry.status === 'Cancelada' ? 'style="text-decoration:line-through"' : ''}>
+                    <td class="id">${entry.id}</td>
+                    <td>${entry.type}</td>
+                    <td>${entry.categories}</td>
+                    <td>${entry.description}</td>
+                    <td>${addRS(entry.value)}</td>
+                    <td>${formatDate(entry.due_date)}</td>
+                    <td>${formatDate(entry.payment_date)}</td>
+                    <td>${entry.account}</td>
+                    <td>${entry.status}</td>
+                </tr>`;
+            });
+        }
+        function populateModalOverdue(data) {
+            var modalContent = document.querySelector('.tbody-overdue');
+            modalContent.innerHTML = ''; // Clear previous content
+            
+            // Loop through data and create table rows
+            data.forEach(function(entry) {
+                function formatDate(dateString) {
+                const [year, month, day] = dateString.split('-');
+                return `${day}/${month}/${year}`;
+                }
+                function addRS(amount) {
+                return `R$ ${amount}`;
+                }
+                
+                modalContent.innerHTML += `
+                <tr class="${entry.type === 'Despesa' ? 'red' : 'green'}" ${entry.status === 'Cancelada' ? 'style="text-decoration:line-through"' : ''}>
+                    <td class="id">${entry.id}</td>
+                    <td>${entry.type}</td>
+                    <td>${entry.categories}</td>
+                    <td>${entry.description}</td>
+                    <td>${addRS(entry.value)}</td>
+                    <td>${formatDate(entry.due_date)}</td>
+                    <td>${formatDate(entry.payment_date)}</td>
+                    <td>${entry.account}</td>
+                    <td>${entry.status}</td>
+                </tr>`;
+            });
+        }
+        // Abrir a modal
+    function openModal(today, overdue) {
+        populateModalToday(today);
+        populateModalOverdue(overdue);
+        document.getElementById("myModal").style.display = "block";
+    }
+    
+    // Fechar a modal quando o usuário clica no botão fechar (x)
+    document.getElementsByClassName("close")[0].onclick = function() {
+      document.getElementById("myModal").style.display = "none";
+    }
+    
+    // Fechar a modal quando o usuário clica fora dela
+    window.onclick = function(event) {
+      if (event.target == document.getElementById("myModal")) {
+        document.getElementById("myModal").style.display = "none";
+      }
+    }
+    </script>
+</body>
+</html>
+
+
+
+
+

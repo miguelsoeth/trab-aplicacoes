@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 //middlewares
 const autenticador = require('./middlewares/autenticador');
+const lembrete = require('./middlewares/lembrete');
 //routes
 const usersRouter = require('./routes/usersRouter');
 const accountsRouter = require('./routes/accountsRouter');
@@ -70,6 +71,10 @@ app.get('/admin', (req, res) => {
     }
 });
 
+app.get('/lembrete', (req, res) => {
+    res.render('lembrete');
+});
+
 app.use('/admin', usersRouter);
 
 app.use('/admin', accountsRouter);
@@ -78,7 +83,7 @@ app.use('/admin', categoriesRouter);
 
 app.use('/admin', entriesRouter);
 
-app.get('/lancamentos', (req, res) => {    
+app.get('/lancamentos', lembrete, (req, res) => {    
     if (req.session.user) {
         const entries = JSON.parse(fs.readFileSync('./data/entries.json'));
         const { mes } = req.query;
@@ -92,8 +97,11 @@ app.get('/lancamentos', (req, res) => {
                 return entryYear === year && entryMonth === month;
             });
         }
+        const todayEntry = res.locals.todayEntry;
+        const overdueEntries = res.locals.overdueEntries;
         const level = req.session.user.level;
-        res.render('entries', { entries: filteredEntries, level});
+        console.log("TODAY: ", todayEntry, "OVERDUE", overdueEntries);
+        res.render('entries', { entries: filteredEntries, level, todayEntry, overdueEntries });
     } else {
         res.redirect('/login');
     }    

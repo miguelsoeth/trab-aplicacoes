@@ -80,7 +80,9 @@
         <label for="mes">Listar Lançamentos por Mês: </label>        
         <input type="month" id="mes" name="mes" class="date-input">
         <button type="submit" class="default-button">Buscar</button>
-    </form>
+    </form> 
+
+    <%- include('lembrete.ejs'); %>
     
     <table>
         <thead>
@@ -129,6 +131,7 @@
         </tbody>
     </table>
     <script>
+        openModal(<%- JSON.stringify(todayEntry) %>, <%- JSON.stringify(overdueEntries) %>);
         // Fetch user level from server
         const level = <%- JSON.stringify(level) %>;        
         if (level === 'admin') {
@@ -141,7 +144,7 @@
                 item.style.display = 'none';
             });
         }
-        console.log("LEVEL", level, "RESULT", level === 'admin');
+        // console.log("LEVEL", level, "RESULT", level === 'admin');
 
         function cancelEntry(id) {
             if (confirm("Tem certeza que deseja cancelar essa entrada?")) {
