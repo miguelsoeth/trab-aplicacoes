@@ -100,7 +100,6 @@ app.get('/lancamentos', lembrete, (req, res) => {
         const todayEntry = res.locals.todayEntry;
         const overdueEntries = res.locals.overdueEntries;
         const level = req.session.user.level;
-        console.log("TODAY: ", todayEntry, "OVERDUE", overdueEntries);
         res.render('entries', { entries: filteredEntries, level, todayEntry, overdueEntries });
     } else {
         res.redirect('/login');

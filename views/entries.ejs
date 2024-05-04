@@ -65,12 +65,18 @@
         table {
             margin: auto;
         }
+        .total {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
     <div class="header">
         <h1><a href="/admin" class="default-button admin-only">Home</a> Lançamentos</h1>
         <div>
+            <a class="default-button botao-hoje-atrasadas">Despesas de Hoje/Atrasadas</a>
             <a class="default-button admin-only" href="/admin/cadastrar-entrada">Cadastrar/Editar lançamento</a>
             <a class="default-button" href="/logout">Logout</a>
         </div>        
@@ -80,7 +86,35 @@
         <label for="mes">Listar Lançamentos por Mês: </label>        
         <input type="month" id="mes" name="mes" class="date-input">
         <button type="submit" class="default-button">Buscar</button>
-    </form> 
+    </form>
+
+    <div>
+        <%
+            let totalDespesa = 0;
+            let totalReceita = 0;
+            function addRS(amount) {
+                return `R$ ${amount}`;
+            }
+            entries.forEach(function(entry) {
+                
+                // Convert entry.value to integer before summing
+                const value = parseInt(entry.value);
+                if (entry.status !== 'Cancelada') {
+                    if (entry.type === 'Despesa') {
+                        totalDespesa += value;
+                    } else if (entry.type === 'Receita') {
+                        totalReceita += value;
+                    }
+                }                
+            });
+    
+            %>
+            <div class="total">
+                <strong><p>Total de despesas: <%= addRS(totalDespesa) %></p></strong>
+                <strong><p>Total de receitas: <%= addRS(totalReceita) %></p></strong>
+            </div>            
+    </div>
+    
 
     <%- include('lembrete.ejs'); %>
     
@@ -130,8 +164,7 @@
             <% }); %>
         </tbody>
     </table>
-    <script>
-        openModal(<%- JSON.stringify(todayEntry) %>, <%- JSON.stringify(overdueEntries) %>);
+    <script>        
         // Fetch user level from server
         const level = <%- JSON.stringify(level) %>;        
         if (level === 'admin') {
@@ -199,6 +232,12 @@
                 });
             }
         }
+        openModal(<%- JSON.stringify(todayEntry) %>, <%- JSON.stringify(overdueEntries) %>);
+        document.querySelectorAll('a.botao-hoje-atrasadas').forEach(button => {
+            button.addEventListener('click', () => {         
+                openModal(<%- JSON.stringify(todayEntry) %>, <%- JSON.stringify(overdueEntries) %>);
+            });
+        });
 
         document.querySelectorAll('button.botao-confirmar').forEach(button => {
             button.addEventListener('click', () => {

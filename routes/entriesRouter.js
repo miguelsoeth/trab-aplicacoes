@@ -101,9 +101,16 @@ router.put('/pagar-entrada/:id', (req, res) => {
     const entryId = req.params.id;
     const index = entries.findIndex(entry => entry.id === entryId);
     if (index !== -1) {
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Adding 1 to month since it's zero-based
+        const day = String(currentDate.getDate()).padStart(2, '0');
+
+        const formattedDate = `${year}-${month}-${day}`;
         entries[index] = {
             ...entries[index],
-            status: "Paga"
+            status: "Paga",
+            payment_date: formattedDate
         };
         fs.writeFileSync('./data/entries.json', JSON.stringify(entries, null, 2));
         res.status(200).json(entries[index]);
