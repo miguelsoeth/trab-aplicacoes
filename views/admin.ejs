@@ -30,19 +30,20 @@
             color: #333;
         }
         #logout-button {
-            background-color: #007bff;
+            background-color: darkred;
             color: #fff;
             border: none;
             border-radius: 5px;
             padding: 10px 50px;
             cursor: pointer;
             text-decoration: none;
+            transition: background-color 0.2s ease;
         }
         #logout-button:hover {
-            background-color: #0056b3;
+            background-color: rgb(189, 29, 29);
         }
         .button {
-            background-color: #007bff;
+            background-color: #2e6db1;
             color: #fff;
             border: none;
             border-radius: 5px;
@@ -53,7 +54,7 @@
             transition: background-color 0.2s ease;
         }
         .button:hover {
-            background-color: #0056b3;
+            background-color: #007bff;
         }
     </style>
 </head>
@@ -66,6 +67,6 @@
         <a class="button" href="/admin/cadastrar-entrada">Cadastro de Receitas/Despesas</a>
         <a class="button" href="/lancamentos">Lançamentos</a>
     </div>
-    <a id="logout-button" href="/logout">Logout</a>
+    <a id="logout-button" href="/logout">Sair</a>
 </body>
 </html>

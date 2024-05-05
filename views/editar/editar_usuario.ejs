@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar usuário</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -15,9 +17,32 @@
             margin: 0;
             padding: 0;
         }
+        h2{
+            font-family: "Manrope";
+        }
+
+        #editar-usuario{
+            padding: 20px;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px;
+            border-radius: 20px;
+            background-color: white;
+        }
+        .containerItens{
+            display: flex;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .itens{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
         label {
             display: block;
-            margin-bottom: 5px;
+            font-family: "Roboto";
+            font-weight: bold;
         }
         input[type="text"],
         input[type="email"],
@@ -32,16 +57,20 @@
         }
 
         button[type="submit"] {
-            background-color: #007bff;
+            background-color: #2e6db1;
             color: #fff;
             border: none;
             padding: 10px 20px;
             border-radius: 4px;
             cursor: pointer;
             width: 100%;
+            transition: background-color 0.2s ease;
+            font-family: "Roboto";
+            font-size: 15px;
         }
         button[type="submit"]:hover {
-            background-color: #0056b3;
+            background-color: #007bff;
+            
         }
 
         #botao-editar {
@@ -66,47 +95,71 @@
         h1 {
             display: flex;
         }
-        #home {
+        #botaoVoltar {
+            position: absolute;
+            top: 30px;
+            left: 30px;
             text-decoration: none;
             font-size: 15px;
             margin-right: 20px;
             border-radius: 4px;
             cursor: pointer;
             color: white;
-            background-color: #007bff;
+            background-color: #2e6db1;
             padding: 10px;
             border: none;
+            transition: background-color 0.2s ease;
+
+            &:hover{
+                background-color: #007bff;
+            }
         }
+
     </style>
 </head>
 <body>
     <div id="editar-usuario">
-        <a href="/admin/cadastrar-usuario" id="home">Voltar</a> 
+        <a href="/admin/cadastrar-usuario" id="botaoVoltar">Voltar</a> 
         <h2>Editar Usuário</h2>
         <form id="userForm">
-            <label for="name">Nome:</label>
-            <input type="text" id="name" name="name" value="<%= usuario.name %>" required><br>
+            <section class="containerItens">
+                <div class="itens">
+                    <label for="name">Nome:</label>
+                    <input type="text" id="name" name="name" value="<%= usuario.name %>" required>
+                </div>
+                <div class="itens">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" value="<%= usuario.email %>" required>
+                </div>
+            </section>
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" value="<%= usuario.email %>" required><br>
+            <section class="containerItens">
+                <div class="itens">
+                    <label for="user">Usuário:</label>
+                    <input type="text" id="user" name="user" value="<%= usuario.user %>" required>
+                </div>
+                <div class="itens">
+                    <label for="password">Senha:</label>
+                    <input type="password" id="password" name="pwd" required>
+                </div>
+            </section>
 
-            <label for="user">Usuário:</label>
-            <input type="text" id="user" name="user" value="<%= usuario.user %>" required><br>
-
-            <label for="password">Senha:</label>
-            <input type="password" id="password" name="pwd" required><br>
-
-            <label for="level">Nível:</label>
-            <select id="level" name="level" required>
-                <option value="admin" <%= usuario.level === 'admin' ? 'selected' : '' %>>Admin</option>
-                <option value="user" <%= usuario.level === 'user' ? 'selected' : '' %>>Usuário</option>
-            </select><br>
-
-            <label for="status">Status:</label>
-            <select id="status" name="status" required>
-                <option value="on" <%= usuario.status === 'on' ? 'selected' : '' %>>On</option>
-                <option value="off" <%= usuario.status === 'off' ? 'selected' : '' %>>Off</option>
-            </select><br>
+            <section class="containerItens">
+                <div class="itens">
+                    <label for="level">Nível:</label>
+                    <select id="level" name="level" required>
+                        <option value="admin" <%= usuario.level === 'admin' ? 'selected' : '' %>>Admin</option>
+                        <option value="user" <%= usuario.level === 'user' ? 'selected' : '' %>>Usuário</option>
+                    </select>
+                </div>
+                <div class="itens">
+                    <label for="status">Status:</label>
+                    <select id="status" name="status" required>
+                        <option value="on" <%= usuario.status === 'on' ? 'selected' : '' %>>On</option>
+                        <option value="off" <%= usuario.status === 'off' ? 'selected' : '' %>>Off</option>
+                    </select>
+                </div>
+            </section>
 
             <button type="submit">Editar</button>
         </form>

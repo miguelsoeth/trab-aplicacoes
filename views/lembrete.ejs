@@ -3,9 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Document</title>
     <style>
-        .modal {
+         @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+body{
+    display: flex;
+    flex-direction: column;
+
+    footer{
+        position: absolute;
+        bottom: -150px;
+    }
+}
+    .modal {
       display: none; 
       position: fixed; 
       z-index: 1; 
@@ -18,11 +30,18 @@
     }
     
     .modal-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-self: center;
       background-color: #fefefe;
-      margin: 5% auto;
+      margin: 150px auto;
       padding: 20px;
       border: 1px solid #888;
       width: 80%;
+      border-radius: 20px;
+      box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px;
+      position: relative;
     }
     
     .close {
@@ -30,6 +49,9 @@
       float: right;
       font-size: 28px;
       font-weight: bold;
+      position: absolute;
+      right: 20px;
+      top: 15px;
     }
     
     .close:hover,
@@ -42,6 +64,40 @@
     .title {
         justify-content: center;
         align-items: center;
+    }
+
+    h3{
+        font-size: 20px;
+        font-family: "Manrope";
+        font-weight: bold;
+    }
+
+    tr{
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+    }
+
+    tr:nth-child(even){
+        background-color: rgb(201, 201, 201);
+    }
+
+    tr:nth-child(odd){
+        background-color: rgb(255, 255, 255);
+    }
+
+    .thVencimento{
+       
+        text-align: center;
+    }
+
+    td{
+        text-align: center;
+        padding: 5px;
+        font-family: "Roboto";
+    }
+
+    table{
+        border-collapse: collapse;
     }
     
     </style>
@@ -58,7 +114,7 @@
                         <th>Categorias</th>
                         <th>Descrição</th>
                         <th>Valor</th>
-                        <th>Data de Vencimento</th>
+                        <th class="thVencimento">Data de Vencimento</th>
                         <th>Data de Pagamento</th>
                         <th>Conta</th>
                         <th>Status</th>
@@ -83,9 +139,10 @@
                 </thead>
                 <tbody class="tbody-overdue">                    
                 </tbody>
-            </table>             
+            </table>           
         </div>
     </div>
+    
     <script>
         function populateModalToday(data) {
             var modalContent = document.querySelector('.tbody-today');
@@ -141,6 +198,7 @@
                     <td>${entry.account}</td>
                     <td>${entry.status}</td>
                 </tr>`;
+                
             });
         }
         // Abrir a modal
@@ -162,6 +220,8 @@
       }
     }
     </script>
+
+<footer>&nbsp;</footer>
 </body>
 </html>
 

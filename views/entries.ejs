@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Lançamentos</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
         .header {
             display: flex;
             align-items: center;
@@ -15,32 +19,96 @@
         h1 {
             display: flex;
             align-items: center;
+            font-family: "Manrope";
+
         }
 
         h1 a {
             margin-right: 25px;
-            font-size: 14px;
+            font-size: 15px;
+            font-family: "Roboto";
+            font-weight: bold;
+        }
+
+        a {
+            font-size: 15px;
+            font-family: "Roboto";
+            font-weight: bold;
+        }
+
+        .containerInputETotais{
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            margin-left: 30px;
+        }
+
+        .total {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: start;
+            gap: 10px;
+            height: 100%;
+
+            p{
+            font-size: 15px;
+            font-family: "Roboto";
+            font-weight: bold;
+            margin: 0px;
+            }
         }
 
         .listar-mes {
             padding: 20px 0px;
             display: flex;
-            align-items: center;
+            align-items: end;
             justify-content: center;
             gap: 10px;
         }
 
+        .containerInputDate {
+            display: flex;
+            flex-direction: column;
+
+            label {
+                font-size: 15px;
+                font-family: "Roboto";
+                font-weight: bold;
+            }
+        }
+
         .default-button {
-            background-color: #007bff;
+            background-color: #2e6db1;
             color: #fff;
             border: none;
             border-radius: 5px;
             padding: 8px 40px;
             cursor: pointer;
             text-decoration: none;
+            transition: background-color 0.2s ease;
         }
+
         .default-button:hover {
-            background-color: #0056b3;
+            background-color: #007bff;
+        }
+
+        .botao-cancelar {
+            background-color: darkred;
+            transition: background-color 0.2s ease;
+
+            &:hover {
+                background-color: red;
+            }
+        }
+
+        .botao-pagar {
+            background-color: green;
+            transition: background-color 0.2s ease;
+
+            &:hover {
+                background-color: rgb(0, 172, 37);
+            }
         }
 
         .date-input {
@@ -55,39 +123,79 @@
         }
 
         .red {
-            color:red;
+            color: red;
         }
 
         .green {
-            color:green;
+            color: green;
         }
 
-        table {
-            margin: auto;
-        }
-        .total {
+        .containerLarguraTotal{
+            width: 100%;
             display: flex;
-            gap: 25px;
             justify-content: center;
         }
+
+        .containerTabela {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px;
+            background-color: white;
+            width: max-content;
+            padding: 20px;
+            border-radius: 20px;
+        }
+
+        .teste{
+            border-top-left-radius: 10px;
+        }
+
+        th {
+            font-family: "Roboto";
+            font-size: 16px;
+            border: 1px solid rgb(128, 128, 128);
+            padding: 5px;
+
+        }
+
+        .botaoSair{
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 40px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.2s ease;
+            background-color: darkred;
+
+            &:hover{
+                background-color: rgb(189, 29, 29);
+            }
+        }
+
+        
     </style>
 </head>
+
 <body>
     <div class="header">
         <h1><a href="/admin" class="default-button admin-only">Home</a> Lançamentos</h1>
         <div>
             <a class="default-button botao-hoje-atrasadas">Despesas de Hoje/Atrasadas</a>
             <a class="default-button admin-only" href="/admin/cadastrar-entrada">Cadastrar/Editar lançamento</a>
-            <a class="default-button" href="/logout">Logout</a>
+            <a class="botaoSair" href="/logout">Sair</a>
         </div>        
     </div>
 
+    <section class="containerInputETotais">
     <form class="listar-mes" action="/lancamentos" method="GET">
-        <label for="mes">Listar Lançamentos por Mês: </label>        
+            <div class="containerInputDate">
+                <label for="mes">Selecione o mês</label>
         <input type="month" id="mes" name="mes" class="date-input">
+            </div>
         <button type="submit" class="default-button">Buscar</button>
     </form>
-
     <div>
         <%
             let totalDespesa = 0;
@@ -110,23 +218,26 @@
     
             %>
             <div class="total">
-                <strong><p>Total de despesas: <%= addRS(totalDespesa) %></p></strong>
-                <strong><p>Total de receitas: <%= addRS(totalReceita) %></p></strong>
+                        <p>Total de despesas: <%= addRS(totalDespesa) %></p>
+                        <p>Total de receitas: <%= addRS(totalReceita) %></p>  
             </div>            
     </div>
+    </section>
     
 
     <%- include('lembrete.ejs'); %>
     
+        <section class="containerLarguraTotal">
+            <div class="containerTabela">
     <table>
         <thead>
             <tr>
-                <th>Tipo</th>
+                <th class="teste">Tipo</th>
                 <th>Categorias</th>
                 <th>Descrição</th>
                 <th>Valor</th>
-                <th>Data de Vencimento</th>
-                <th>Data de Pagamento</th>
+                <th>Data de <br>Vencimento</th>
+                <th>Data de <br>Pagamento</th>
                 <th>Conta</th>
                 <th>Status</th>
                 <!-- <th>Comentários</th> -->
@@ -164,6 +275,8 @@
             <% }); %>
         </tbody>
     </table>
+            </div>
+        </section>
     <script>        
         // Fetch user level from server
         const level = <%- JSON.stringify(level) %>;        
@@ -261,4 +374,5 @@
         });
     </script>
 </body>
+
 </html>

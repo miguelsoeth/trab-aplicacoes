@@ -1,24 +1,12 @@
 [
   {
-    "id": "35156dc5-44db-4c4e-b4e1-f28c060cf6af",
-    "type": "Despesa",
-    "categories": "Carro",
-    "description": "parcela",
-    "value": "800",
-    "due_date": "2024-05-03",
-    "payment_date": "2024-05-03",
-    "account": "Conta Corrente",
-    "status": "Paga",
-    "comments": "on"
-  },
-  {
     "id": "dde6b645-a57b-406b-91c5-207c4f738ff3",
-    "type": "Receita",
-    "categories": "Salario",
+    "type": "Despesa",
+    "categories": "Streaming",
     "description": "do mes",
     "value": "2000",
-    "due_date": "2024-05-01",
-    "payment_date": "2024-05-01",
+    "due_date": "2024-05-06",
+    "payment_date": "2024-05-30",
     "account": "Conta Corrente",
     "status": "Confirmada",
     "comments": "on"
@@ -33,6 +21,18 @@
     "payment_date": "2024-05-04",
     "account": "Conta Corrente",
     "status": "Confirmada",
+    "comments": "on"
+  },
+  {
+    "id": "35156dc5-44db-4c4e-b4e1-f28c060cf6af",
+    "type": "Despesa",
+    "categories": "Carro",
+    "description": "parcela",
+    "value": "800",
+    "due_date": "2024-05-03",
+    "payment_date": "2024-05-03",
+    "account": "Conta Corrente",
+    "status": "Paga",
     "comments": "on"
   },
   {
@@ -53,6 +53,18 @@
     "categories": "Carro",
     "description": "Parcela super extra",
     "value": "150",
+    "due_date": "2024-05-03",
+    "payment_date": "2024-05-03",
+    "account": "Conta Corrente",
+    "status": "Confirmada",
+    "comments": "on"
+  },
+  {
+    "id": "d62079c5-32dc-4852-9abf-f4efb201d1b9",
+    "type": "Receita",
+    "categories": "Aposento",
+    "description": "de hoje",
+    "value": "1500",
     "due_date": "2024-05-03",
     "payment_date": "2024-05-03",
     "account": "Conta Corrente",
@@ -106,17 +118,5 @@
     "account": "Conta Corrente",
     "status": "Confirmada",
     "comments": "off"
-  },
-  {
-    "id": "d62079c5-32dc-4852-9abf-f4efb201d1b9",
-    "type": "Receita",
-    "categories": "Aposento",
-    "description": "de hoje",
-    "value": "1500",
-    "due_date": "2024-05-03",
-    "payment_date": "2024-05-03",
-    "account": "Conta Corrente",
-    "status": "Confirmada",
-    "comments": "on"
   }
 ]

@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar usuário</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -13,10 +15,39 @@
             align-items: center;
             margin: 0;
             padding: 0;
+            height: 100vh;
+            width: 100vw;
         }
+
+        h2{
+            font-family: "Manrope";
+        }
+        #editar-usuario{
+            padding: 20px;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px;
+            border-radius: 20px;
+            background-color: white;
+        }
+
+        .containerItens{
+            display: flex;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .itens{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+
+
         label {
             display: block;
-            margin-bottom: 5px;
+            font-family: "Roboto";
+            font-weight: bold;
+
         }
         input[type="text"],
         input[type="date"],
@@ -33,16 +64,20 @@
         }
 
         button[type="submit"] {
-            background-color: #007bff;
+            background-color: #2e6db1;
             color: #fff;
             border: none;
             padding: 10px 20px;
             border-radius: 4px;
             cursor: pointer;
             width: 100%;
+            transition: background-color 0.2s ease;
+            font-family: "Roboto";
+            font-size: 15px;
         }
         button[type="submit"]:hover {
-            background-color: #0056b3;
+            background-color: #007bff;
+            
         }
 
         #botao-editar {
@@ -53,6 +88,7 @@
             padding: 8px 15px;
             cursor: pointer;
             background-color: #007bff;
+            
         }
         #botao-deletar {
             float: right;
@@ -67,65 +103,93 @@
         h1 {
             display: flex;
         }
-        #home {
+        #botaoVoltar {
+            position: absolute;
+            top: 30px;
+            left: 30px;
             text-decoration: none;
             font-size: 15px;
             margin-right: 20px;
             border-radius: 4px;
             cursor: pointer;
             color: white;
-            background-color: #007bff;
+            background-color: #2e6db1;
             padding: 10px;
             border: none;
+            transition: background-color 0.2s ease;
+
+            &:hover{
+                background-color: #007bff;
+            }
         }
     </style>
 </head>
 <body>
     <div id="editar-usuario">
-        <a href="/admin/cadastrar-entrada" id="home">Voltar</a> 
+        <a href="/admin/cadastrar-entrada" id="botaoVoltar">Voltar</a> 
         <h2>Editar entrada</h2>
         <form id="userForm" action="/admin/editar-entrada" method="POST">
-            <label for="type">Tipo:</label>
-            <select id="type" name="type" required>
-                <option value="Receita" <%= entry.type === 'Receita' ? 'selected' : '' %>>Receita</option>
-                <option value="Despesa" <%= entry.type === 'Despesa' ? 'selected' : '' %>>Despesa</option>
-            </select><br>
+            <section class="containerItens">
+            <div class="itens">
+                <label for="type">Tipo:</label>
+                    <select id="type" name="type" required>
+                        <option value="Receita" <%= entry.type === 'Receita' ? 'selected' : '' %>>Receita</option>
+                        <option value="Despesa" <%= entry.type === 'Despesa' ? 'selected' : '' %>>Despesa</option>
+                    </select>
+                </div>
+                <div class="itens">
+                    <label for="categories">Categoria:</label>
+                    <select id="categories" name="categories" value="<%= entry.categories %>" required>
+                    </select>
+                </div>
+            </section>
 
-            <label for="categories">Categoria:</label>
-            <select id="categories" name="categories" value="<%= entry.categories %>" required>
-            </select><br>
+            <section class="containerItens">
+                <div class="itens">
+                    <label for="description">Descriçao:</label>
+                    <input type="text" id="description" name="description" value="<%= entry.description %>" required>
+                </div>
+                <div class="itens">
+                    <label for="value">Valor:</label>
+                    <input type="number" id="value" name="value" step="0.1" value="<%= entry.value %>" required>
+                </div>
+            </section>
 
-            <label for="description">Descriçao:</label>
-            <input type="text" id="description" name="description" value="<%= entry.description %>" required><br>
-
-            <label for="value">Valor:</label>
-            <input type="number" id="value" name="value" step="0.1" value="<%= entry.value %>" required><br>
-
-            <label for="due_date">Data vencimento:</label>
-            <input type="date" id="due_date" name="due_date" value="<%= entry.due_date %>" required><br>
-
-            <label for="payment_date">Data pagamento:</label>
-            <input type="date" id="payment_date" name="payment_date" value="<%= entry.payment_date %>"><br>
+            <section class="containerItens">
+                <div class="itens">
+                    <label for="due_date">Data vencimento:</label>
+                    <input type="date" id="due_date" name="due_date" value="<%= entry.due_date %>" required>
+                </div>
+                <div class="itens">
+                    <label for="payment_date">Data pagamento:</label>
+                    <input type="date" id="payment_date" name="payment_date" value="<%= entry.payment_date %>">
+                </div>
+            </section>
             
-            <label for="account">Conta:</label>
-            <select id="account" name="account" required>
-                <option value="Conta Corrente" <%= entry.account === 'Conta Corrente' ? 'selected' : '' %>>Conta Corrente</option>
-                <option value="Conta Poupança" <%= entry.account === 'Conta Poupança' ? 'selected' : '' %>>Conta Poupança</option>
-            </select><br>
-
-            <label for="status">Status:</label>
-            <select id="status" name="status" required>
-                <option value="Lancada" <%= entry.status === 'Lancada' ? 'selected' : '' %>>Lancada</option>
-                <option value="Confirmada" <%= entry.status === 'Confirmada' ? 'selected' : '' %>>Confirmada</option>
-                <option value="Paga" <%= entry.status === 'Paga' ? 'selected' : '' %>>Paga</option>
-                <option value="Cancelada" <%= entry.status === 'Cancelada' ? 'selected' : '' %>>Cancelada</option>
-            </select><br>
+            <section class="containerItens">
+                <div class="itens">
+                    <label for="account">Conta:</label>
+                    <select id="account" name="account" required>
+                        <option value="Conta Corrente" <%= entry.account === 'Conta Corrente' ? 'selected' : '' %>>Conta Corrente</option>
+                        <option value="Conta Poupança" <%= entry.account === 'Conta Poupança' ? 'selected' : '' %>>Conta Poupança</option>
+                    </select>
+                </div>
+                <div class="itens">
+                    <label for="status">Status:</label>
+                    <select id="status" name="status" required>
+                        <option value="Lancada" <%= entry.status === 'Lancada' ? 'selected' : '' %>>Lancada</option>
+                        <option value="Confirmada" <%= entry.status === 'Confirmada' ? 'selected' : '' %>>Confirmada</option>
+                        <option value="Paga" <%= entry.status === 'Paga' ? 'selected' : '' %>>Paga</option>
+                        <option value="Cancelada" <%= entry.status === 'Cancelada' ? 'selected' : '' %>>Cancelada</option>
+                    </select>
+                </div>
+            </section>
 
             <label for="comments">Comentarios:</label>
             <select id="comments" name="comments" required>
                 <option value="on" <%= entry.comments === 'on' ? 'selected' : '' %>>On</option>
                 <option value="off" <%= entry.comments === 'off' ? 'selected' : '' %>>Off</option>
-            </select><br>
+            </select>
 
             <button type="submit">Editar</button>
         </form>

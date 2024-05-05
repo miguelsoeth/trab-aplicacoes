@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar usuário</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -15,9 +17,32 @@
             margin: 0;
             padding: 0;
         }
+
+        h2{
+            font-family: "Manrope";
+        }
+
+        #editar-usuario{
+            padding: 20px;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px;
+            border-radius: 20px;
+            background-color: white;
+        }
+        .containerItens{
+            display: flex;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .itens{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
         label {
             display: block;
-            margin-bottom: 5px;
+            font-family: "Roboto";
+            font-weight: bold;
         }
         input[type="text"],
         input[type="email"],
@@ -32,16 +57,20 @@
         }
 
         button[type="submit"] {
-            background-color: #007bff;
+            background-color: #2e6db1;
             color: #fff;
             border: none;
             padding: 10px 20px;
             border-radius: 4px;
             cursor: pointer;
             width: 100%;
+            transition: background-color 0.2s ease;
+            font-family: "Roboto";
+            font-size: 15px;
         }
         button[type="submit"]:hover {
-            background-color: #0056b3;
+            background-color: #007bff;
+            
         }
 
         #botao-editar {
@@ -66,29 +95,42 @@
         h1 {
             display: flex;
         }
-        #home {
+        #botaoVoltar {
+            position: absolute;
+            top: 30px;
+            left: 30px;
             text-decoration: none;
             font-size: 15px;
             margin-right: 20px;
             border-radius: 4px;
             cursor: pointer;
             color: white;
-            background-color: #007bff;
+            background-color: #2e6db1;
             padding: 10px;
             border: none;
+            transition: background-color 0.2s ease;
+
+            &:hover{
+                background-color: #007bff;
+            }
         }
     </style>
 </head>
 <body>
     <div id="editar-usuario">
-        <a href="/admin/cadastrar-conta" id="home">Voltar</a> 
+        <a href="/admin/cadastrar-conta" id="botaoVoltar">Voltar</a> 
         <h2>Editar Conta</h2>
         <form id="userForm" action="/admin/editar-conta" method="POST">
-            <label for="banco">Banco:</label>
-            <input type="text" id="banco" name="banco" value="<%= account.banco %>" required><br>
-
-            <label for="conta">Num. da conta:</label>
-            <input type="text" id="conta" name="conta" value="<%= account.conta %>" required><br>
+            <section class="containerItens">
+                <div class="itens">
+                    <label for="banco">Banco:</label>
+                    <input type="text" id="banco" name="banco" value="<%= account.banco %>" required>
+                </div>
+                <div>
+                    <label for="conta">Num. da conta:</label>
+                    <input type="text" id="conta" name="conta" value="<%= account.conta %>" required>
+                </div>
+            </section>
 
             <label for="tipo">Tipo:</label>
             <select id="tipo" name="tipo" required>

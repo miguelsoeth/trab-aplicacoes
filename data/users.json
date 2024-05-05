@@ -25,5 +25,14 @@
         "pwd": "b4dc66dde806261bdda8607d8707aa727d308cd80272381a5583f63899918467",
         "level": "user",
         "status": "off"
+    },
+    {
+        "id": "8e328d51-acc5-4819-bb4c-8ee7630fcbf8",
+        "name": "wesley",
+        "email": "wesley@gmail.com",
+        "user": "wess",
+        "pwd": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
+        "level": "admin",
+        "status": "on"
     }
 ]
