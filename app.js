@@ -71,10 +71,6 @@ app.get('/admin', (req, res) => {
     }
 });
 
-app.get('/lembrete', (req, res) => {
-    res.render('lembrete');
-});
-
 app.use('/admin', usersRouter);
 
 app.use('/admin', accountsRouter);
