@@ -3,7 +3,23 @@ const fs = require('fs');
 const lembrete = (req, res, next) => {
     const { mes } = req.query;
     const entries = JSON.parse(fs.readFileSync('./data/entries.json'));
+
+    entries.forEach(entry => {
+        if (entry.payment_date) {
+            const [entryYear, entryMonth, entryDay] = entry.payment_date.split('-');
+            const brazilDate = new Date().toLocaleDateString('en-GB', { timeZone: 'America/Sao_Paulo' });
+            const [Year, Month, Day] = brazilDate.split('/').map(part => part.padStart(2, '0')).reverse();
+    
+            if (entry.status === "Confirmada" && entryYear <= Year && entryMonth <= Month && entryDay <= Day) {
+                entry.status = "Paga";
+            }
+        }
+    });
+
+    fs.writeFileSync('./data/entries.json', JSON.stringify(entries, null, 2));
+
     let filteredEntries = entries;
+
     if (mes) {
         const [year, month] = mes.split('-'); // month - 1 because month is zero-indexed in JavaScript Date objects
         filteredEntries = entries.filter(entry => {

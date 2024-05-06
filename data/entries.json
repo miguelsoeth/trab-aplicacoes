@@ -5,11 +5,11 @@
     "categories": "Aluguel",
     "description": "10123",
     "value": "39102931",
-    "due_date": "2024-05-01",
-    "status": "Confirmada",
+    "due_date": "2024-04-01",
+    "status": "Paga",
     "account": "Banco do Brasil: 456",
     "comments": "on",
-    "payment_date": "2024-05-24"
+    "payment_date": "2024-04-01"
   },
   {
     "id": "61817715-3329-40a6-8d78-1f2fbb4a3f5e",
@@ -17,7 +17,7 @@
     "categories": "Salario",
     "description": "do mes",
     "value": "1200",
-    "due_date": "2024-05-07",
+    "due_date": "2024-05-05",
     "status": "Confirmada",
     "payment_date": "2024-05-08",
     "account": "Banco do Brasil: 456",
@@ -30,8 +30,9 @@
     "description": "312312",
     "value": "21312",
     "due_date": "2024-05-29",
-    "status": "Lançada",
+    "status": "Cancelada",
     "account": "Santander: 345",
-    "comments": "on"
+    "comments": "on",
+    "payment_date": "2024-05-15"
   }
 ]
