@@ -174,6 +174,13 @@
             }
         }
 
+        #confirmar-data {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin: auto;
+        }
+
         
     </style>
 </head>
@@ -220,8 +227,15 @@
             <div class="total">
                         <p>Total de despesas: <%= addRS(totalDespesa) %></p>
                         <p>Total de receitas: <%= addRS(totalReceita) %></p>  
-            </div>            
-    </div>
+            </div>       
+    </div>   
+    
+    <form id="confirmar-data">
+        <div class="containerInputDate">
+            <label for="confirm_date">Data para confirmar:</label>
+            <input type="date" id="confirm_date" name="confirm_date" class="date-input">
+        </div>
+    </form>
     </section>
     
 
@@ -333,7 +347,15 @@
 
         function confirmEntry(id) {
             if (confirm("Tem certeza que deseja confirmar essa entrada?")) {
-                fetch(`/admin/confirmar-entrada/${id}`, {
+                const confirmDataInput = document.getElementById('confirm_date');
+                const conf_date = confirmDataInput.value;
+
+                if (!conf_date) {
+                    alert("Campo de confirmação de data é obrigatório.");
+                    return;
+                }
+
+                fetch(`/admin/confirmar-entrada/${id}/${conf_date}`, {
                     method: 'PUT'
                 })
                 .then(response => {
@@ -348,7 +370,9 @@
                 });
             }
         }
+
         openModal(<%- JSON.stringify(todayEntry) %>, <%- JSON.stringify(overdueEntries) %>);
+
         document.querySelectorAll('a.botao-hoje-atrasadas').forEach(button => {
             button.addEventListener('click', () => {         
                 openModal(<%- JSON.stringify(todayEntry) %>, <%- JSON.stringify(overdueEntries) %>);

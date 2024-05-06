@@ -73,13 +73,15 @@ router.put('/editar-entrada/:id', (req, res) => {
     }
 });
 
-router.put('/confirmar-entrada/:id', (req, res) => {
+router.put('/confirmar-entrada/:id/:date', (req, res) => {
     const entryId = req.params.id;
+    const confirmDate = req.params.date;
     const index = entries.findIndex(entry => entry.id === entryId);
     if (index !== -1) {
         entries[index] = {
             ...entries[index],
-            status: "Confirmada"
+            status: "Confirmada",
+            payment_date: confirmDate
         };
         fs.writeFileSync('./data/entries.json', JSON.stringify(entries, null, 2));
         res.status(200).json(entries[index]);

@@ -1,1 +1,37 @@
-[]
+[
+  {
+    "id": "71de11fd-092a-4f03-98b7-5e9e63dcae7a",
+    "type": "Despesa",
+    "categories": "Aluguel",
+    "description": "10123",
+    "value": "39102931",
+    "due_date": "2024-05-01",
+    "status": "Confirmada",
+    "account": "Banco do Brasil: 456",
+    "comments": "on",
+    "payment_date": "2024-05-24"
+  },
+  {
+    "id": "61817715-3329-40a6-8d78-1f2fbb4a3f5e",
+    "type": "Receita",
+    "categories": "Salario",
+    "description": "do mes",
+    "value": "1200",
+    "due_date": "2024-05-07",
+    "status": "Confirmada",
+    "payment_date": "2024-05-08",
+    "account": "Banco do Brasil: 456",
+    "comments": "on"
+  },
+  {
+    "id": "42536a62-52fc-411e-8d54-cdc84d3a0855",
+    "type": "Receita",
+    "categories": "Investimentos",
+    "description": "312312",
+    "value": "21312",
+    "due_date": "2024-05-29",
+    "status": "Lançada",
+    "account": "Santander: 345",
+    "comments": "on"
+  }
+]
