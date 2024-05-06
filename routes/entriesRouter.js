@@ -8,7 +8,8 @@ const entries = JSON.parse(fs.readFileSync('./data/entries.json'));
 router.get('/cadastrar-entrada', (req, res) => {
     if (req.session.user && req.session.user.level === 'admin') {
         const categories = JSON.parse(fs.readFileSync('./data/categories.json'));
-        res.render('cadastro/cadastro_entrada', { entries: entries, categoriesList: categories });
+        const accounts = JSON.parse(fs.readFileSync('./data/accounts.json'));
+        res.render('cadastro/cadastro_entrada', { entries: entries, categoriesList: categories, accountsList: accounts });
     } else {
         res.redirect('/admin');
     }
@@ -20,8 +21,8 @@ router.post('/cadastrar-entrada', (req, res) => {
             id: uuidv4(),
             ...req.body
         };
+        delete newEntry.account_type;
         entries.push(newEntry);
-        console.log(entries);
         fs.writeFileSync('./data/entries.json', JSON.stringify(entries, null, 4), 'utf-8');
         res.redirect('/admin/cadastrar-entrada');
     } else {
@@ -42,11 +43,12 @@ router.delete('/deletar-entrada/:id', (req, res) => {
 });
 
 router.get('/editar-entrada/:id', (req, res) => {
-    if (req.session.user && req.session.user.level === 'admin') {
+    if (req.session.user && req.session.user.level === 'admin') {        
+        const accounts = JSON.parse(fs.readFileSync('./data/accounts.json'));
         const entryId = req.params.id;
         const index = entries.findIndex(entry => entry.id === entryId);
         const categories = JSON.parse(fs.readFileSync('./data/categories.json'));
-        res.render('editar/editar_entrada', { entry: entries[index], categoriesList: categories });
+        res.render('editar/editar_entrada', { entry: entries[index], categoriesList: categories, accountsList: accounts });
     } else {
         res.redirect('/admin');
     }
@@ -60,6 +62,10 @@ router.put('/editar-entrada/:id', (req, res) => {
             ...entries[index],
             ...req.body
         };
+        delete entries[index].account_type;
+        if (entries[index].status === "Lançada") {
+            entries[index].payment_date = null;
+        }
         fs.writeFileSync('./data/entries.json', JSON.stringify(entries, null, 2));
         res.status(200).json(entries[index]);
     } else {
@@ -88,7 +94,8 @@ router.put('/cancelar-entrada/:id', (req, res) => {
     if (index !== -1) {
         entries[index] = {
             ...entries[index],
-            status: "Cancelada"
+            status: "Cancelada",            
+            payment_date: null
         };
         fs.writeFileSync('./data/entries.json', JSON.stringify(entries, null, 2));
         res.status(200).json(entries[index]);

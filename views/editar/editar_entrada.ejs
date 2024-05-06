@@ -157,39 +157,48 @@
 
             <section class="containerItens">
                 <div class="itens">
-                    <label for="due_date">Data vencimento:</label>
-                    <input type="date" id="due_date" name="due_date" value="<%= entry.due_date %>" required>
+                    <label for="account_type">Tipo de conta:</label>
+                    <select id="account_type" name="account_type" required>
+                        <option value="Conta Corrente">Conta Corrente</option>
+                        <option value="Conta Poupança">Conta Poupança</option>
+                    </select>
                 </div>
                 <div class="itens">
-                    <label for="payment_date">Data pagamento:</label>
-                    <input type="date" id="payment_date" name="payment_date" value="<%= entry.payment_date %>">
-                </div>
+                    <label for="account">Conta:</label>
+                    <select id="account" name="account" required>
+                    </select>
+                </div>                
             </section>
             
             <section class="containerItens">
                 <div class="itens">
-                    <label for="account">Conta:</label>
-                    <select id="account" name="account" required>
-                        <option value="Conta Corrente" <%= entry.account === 'Conta Corrente' ? 'selected' : '' %>>Conta Corrente</option>
-                        <option value="Conta Poupança" <%= entry.account === 'Conta Poupança' ? 'selected' : '' %>>Conta Poupança</option>
+                    <label for="due_date">Data vencimento:</label>
+                    <input type="date" id="due_date" name="due_date" value="<%= entry.due_date %>" required>
+                </div>            
+                <div class="itens">
+                    <label for="payment_date">Data pagamento:</label>
+                    <input type="date" id="payment_date" name="payment_date" value="<%= entry.payment_date %>">
+                </div>                
+            </section>
+
+            <section class="containerItens">                
+                <div class="itens">
+                    <label for="comments">Comentarios:</label>
+                    <select id="comments" name="comments" required>
+                        <option value="on" <%= entry.comments === 'on' ? 'selected' : '' %>>On</option>
+                        <option value="off" <%= entry.comments === 'off' ? 'selected' : '' %>>Off</option>
                     </select>
                 </div>
                 <div class="itens">
                     <label for="status">Status:</label>
                     <select id="status" name="status" required>
-                        <option value="Lancada" <%= entry.status === 'Lancada' ? 'selected' : '' %>>Lancada</option>
+                        <option value="Lançada" <%= entry.status === 'Lançada' ? 'selected' : '' %>>Lançada</option>
                         <option value="Confirmada" <%= entry.status === 'Confirmada' ? 'selected' : '' %>>Confirmada</option>
                         <option value="Paga" <%= entry.status === 'Paga' ? 'selected' : '' %>>Paga</option>
                         <option value="Cancelada" <%= entry.status === 'Cancelada' ? 'selected' : '' %>>Cancelada</option>
                     </select>
                 </div>
-            </section>
-
-            <label for="comments">Comentarios:</label>
-            <select id="comments" name="comments" required>
-                <option value="on" <%= entry.comments === 'on' ? 'selected' : '' %>>On</option>
-                <option value="off" <%= entry.comments === 'off' ? 'selected' : '' %>>Off</option>
-            </select>
+            </section>            
 
             <button type="submit">Editar</button>
         </form>
@@ -247,6 +256,56 @@
 
         typeDropdown.dispatchEvent(new Event('change'));
         categoriesDropdown.value = `${entryCategories}`;
+
+        const statusDropdown = document.getElementById('status');
+        const paymentDateInput = document.getElementById('payment_date');
+
+        statusDropdown.addEventListener('change', () => {
+            const selectedStatus = statusDropdown.value;
+            if (selectedStatus === 'Lançada') {
+                paymentDateInput.disabled = true;
+            }
+            else {
+                paymentDateInput.disabled = false;
+                console.log("enabled");
+            }
+        });
+        statusDropdown.dispatchEvent(new Event('change'));
+
+        const entryAccount = <%- JSON.stringify(entry.account) %>;
+        const accountsList = <%- JSON.stringify(accountsList) %>;
+        const matchingAccount = accountsList.find(account => account.comments === entryAccount);
+        const TypeAccount = matchingAccount.description;
+
+        const accountTypeDropdown = document.getElementById('account_type');
+
+        for (let i = 0; i < accountTypeDropdown.options.length; i++) {
+            if (accountTypeDropdown.options[i].value === TypeAccount) {
+                accountTypeDropdown.options[i].selected = true;
+                break;
+            }
+        }
+                
+        const accountDropdown = document.getElementById('account');
+
+        accountTypeDropdown.addEventListener('change', () => {
+            const selectedAccountType = accountTypeDropdown.value;
+            accountDropdown.innerHTML = "";
+            const filteredAccounts = accountsList.filter(account => account.description === selectedAccountType);
+            filteredAccounts.forEach(account => {
+                    const option = document.createElement('option');
+                    option.value = account.comments;
+                    option.textContent = account.comments;
+
+                    if (account.comments === entryAccount) {
+                        option.selected = true;
+                    }
+
+                    accountDropdown.appendChild(option);
+            });
+        });
+        accountTypeDropdown.dispatchEvent(new Event('change'));
+            
     </script>
 </body>
 </html>

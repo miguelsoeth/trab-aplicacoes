@@ -8,15 +8,15 @@
     <style>
          @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
-body{
-    display: flex;
-    flex-direction: column;
+    body{
+        display: flex;
+        flex-direction: column;
 
-    footer{
-        position: absolute;
-        bottom: -150px;
+        footer{
+            position: absolute;
+            bottom: -150px;
+        }
     }
-}
     .modal {
       display: none; 
       position: fixed; 
@@ -151,11 +151,14 @@ body{
             // Loop through data and create table rows
             data.forEach(function(entry) {
                 function formatDate(dateString) {
-                const [year, month, day] = dateString.split('-');
-                return `${day}/${month}/${year}`;
+                    if (dateString) {
+                        const [year, month, day] = dateString.split('-');
+                        return `${day}/${month}/${year}`;
+                    }
+                    return 'Não informado';
                 }
                 function addRS(amount) {
-                return `R$ ${amount}`;
+                    return `R$ ${amount}`;
                 }
                 
                 modalContent.innerHTML += `
@@ -179,11 +182,14 @@ body{
             // Loop through data and create table rows
             data.forEach(function(entry) {
                 function formatDate(dateString) {
-                const [year, month, day] = dateString.split('-');
-                return `${day}/${month}/${year}`;
+                    if (dateString) {
+                        const [year, month, day] = dateString.split('-');
+                        return `${day}/${month}/${year}`;
+                    }
+                    return 'Não informado';
                 }
                 function addRS(amount) {
-                return `R$ ${amount}`;
+                    return `R$ ${amount}`;
                 }
                 
                 modalContent.innerHTML += `

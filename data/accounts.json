@@ -12,6 +12,11 @@
     {
         "id": "43597259-ba9d-4f1b-9718-8d7ebebca116",
         "description": "Conta Poupança",
-        "comments": "345: 345"
+        "comments": "Santander: 345"
+    },
+    {
+        "id": "526c6c68-aaf7-4849-b01e-7cadcb9723bb",
+        "description": "Conta Corrente",
+        "comments": "Bradesco: 102"
     }
 ]

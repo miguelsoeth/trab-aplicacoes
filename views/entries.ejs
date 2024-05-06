@@ -248,8 +248,11 @@
             entries.sort((a, b) => new Date(a.due_date) - new Date(b.due_date));
             entries.forEach(function(entry) {
                 function formatDate(dateString) {
-                    const [year, month, day] = dateString.split('-');
-                    return `${day}/${month}/${year}`;
+                    if (dateString) {
+                        const [year, month, day] = dateString.split('-');
+                        return `${day}/${month}/${year}`;
+                    }
+                    return 'Não informado';
                 }
                 function addRS(amount) {
                     return `R$ ${amount}`;
